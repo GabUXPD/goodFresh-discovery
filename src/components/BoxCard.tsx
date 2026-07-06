@@ -15,8 +15,8 @@ export function BoxCard({ box }: { box: Box }) {
   const armarClassName =
     "flex shrink-0 items-center gap-1 rounded-full border border-brand py-1.5 pr-2 pl-3.5 text-xs font-medium text-brand";
 
-  return (
-    <div className="w-[243px] shrink-0 overflow-hidden rounded-card bg-white pb-3 shadow-sm">
+  const content = (
+    <>
       <div className="relative aspect-[243/63.39] w-full overflow-hidden rounded-t-[8px]">
         <Image src={box.image} alt={box.name} fill sizes="243px" className="object-cover" />
       </div>
@@ -37,19 +37,22 @@ export function BoxCard({ box }: { box: Box }) {
             </div>
             <span className="text-[10px] text-ink-3">{box.itemCount}</span>
           </div>
-          {box.href ? (
-            <Link href={box.href} className={armarClassName}>
-              Armar
-              <ChevronRightIcon className="h-[18px] w-[18px]" />
-            </Link>
-          ) : (
-            <button type="button" className={armarClassName}>
-              Armar
-              <ChevronRightIcon className="h-[18px] w-[18px]" />
-            </button>
-          )}
+          <span className={armarClassName}>
+            Armar
+            <ChevronRightIcon className="h-[18px] w-[18px]" />
+          </span>
         </div>
       </div>
-    </div>
+    </>
+  );
+
+  const cardClassName = "w-[243px] shrink-0 overflow-hidden rounded-card bg-white pb-3 shadow-sm";
+
+  return box.href ? (
+    <Link href={box.href} className={cardClassName}>
+      {content}
+    </Link>
+  ) : (
+    <div className={cardClassName}>{content}</div>
   );
 }

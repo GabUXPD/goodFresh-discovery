@@ -85,7 +85,7 @@ export default function CompraExitosaPage() {
         <button
           type="button"
           onClick={handleSeguirComprando}
-          className="flex w-full items-center justify-center rounded-full border border-brand px-4 py-2.5 text-base font-medium text-brand"
+          className="flex w-full items-center justify-center rounded-full border border-brand px-4 py-2.5 text-[14px] leading-[1.5] font-medium text-brand"
         >
           Seguir comprando
         </button>

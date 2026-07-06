@@ -117,3 +117,6 @@ GoodFresh hereda la credibilidad de GoodMeal (3M descargas, top 3 apps Chile 202
 - `GoodFresh_UX_Reference.md` — patrones UX completos, señales de confianza, antipatrones
 - `Inventario_GoodFresh.xlsx` — 111 productos en 3 categorías (Verduras 48, Frutas 23, Frutos secos 36)
 - Figma: `No0ugJttymp2LrbsboaGvW` nodo `294-3123` — diseño de referencia de la tienda
+
+** URL del prototipo:**
+https://goodfresh-discovery.vercel.app/

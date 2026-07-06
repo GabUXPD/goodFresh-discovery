@@ -299,7 +299,7 @@ export default function CajaEnsaladasPage() {
         <div className="flex items-center gap-4">
           <Link
             href="/"
-            className="flex flex-1 items-center justify-center rounded-full border border-brand px-5 py-3 text-base font-medium text-brand"
+            className="flex flex-1 items-center justify-center rounded-full border border-brand px-5 py-3 text-[14px] leading-[1.5] font-medium text-brand"
           >
             Seguir comprando
           </Link>
