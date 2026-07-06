@@ -87,6 +87,87 @@ Use realistic ratings (4.2 to 4.9 range, not everything is 5 stars), plausible d
 
 All images must come from the `/public/images/` folder. Reference them as `/images/[filename]`. Do not use placeholder URLs, external image URLs, or made-up file paths. Only reference files that actually exist in the images folder.
 
+The full, verified list of files currently in `/public/images/` (this is the only valid set — do not reference anything not on this list, and check this list again if new files are added to the folder):
+
+```
+/images/acelga.png
+/images/aji-amarillo.png
+/images/aji-verde.png
+/images/ajo.png
+/images/alcachofa.png
+/images/albahaca.png
+/images/almendras-chocolate.jpg
+/images/almendras.jpg
+/images/apio.png
+/images/arandano.png
+/images/berenjena.png
+/images/berros.png
+/images/brocoli.png
+/images/bruselas.jpg
+/images/cajaCompleta.jpeg
+/images/cajaCompleta.png
+/images/cajaFrutas.png
+/images/cajaVerduras.png
+/images/cajaverdurasGrande.png
+/images/camote-morado.jpg
+/images/cebolla.png
+/images/cebollin.png
+/images/champiñon.png
+/images/choclo.png
+/images/ciboulette.jpg
+/images/cilantro.png
+/images/coliflor.png
+/images/diente-de-dragon.jpg
+/images/esparragos.jpg
+/images/frutillas.png
+/images/goodFresh-logo.png
+/images/jengibre.jpg
+/images/kiwi.png
+/images/lechuga-escarola.png
+/images/lechuga.png
+/images/lechugafrancesa.webp
+/images/lechugahidroponica.webp
+/images/lechugamarina.webp
+/images/limon-de-pica.png
+/images/limon.png
+/images/mancaqui.png
+/images/mandarinas.png
+/images/mango.png
+/images/manzana-pink-lady.jpg
+/images/manzanaFuji.png
+/images/manzanaVerde.png
+/images/menta.jpg
+/images/naranjas.png
+/images/palta-peru.png
+/images/palta.png
+/images/papas.png
+/images/pepino-dulce.png
+/images/pepino.png
+/images/pera.png
+/images/perejil.jpg
+/images/pimenton.png
+/images/pimentonamarillo.avif
+/images/pimentonrojo.avif
+/images/piña.png
+/images/platano.png
+/images/pomelo.png
+/images/porotos-verdes.jpg
+/images/portadaTienda.png
+/images/rabanitos.jpg
+/images/repollo-crespo.jpg
+/images/repollo-morado.jpg
+/images/rucula.png
+/images/tomate.png
+/images/tuna.jpg
+/images/uva-roja.jpg
+/images/uva-verde.png
+/images/vetarraga.png
+/images/zanahoria.png
+/images/zapallo.png
+```
+
+Notes on this set: `cajaCompleta.png` and `cajaCompleta.jpeg` are two distinct assets (not a duplicate) — use whichever fits the context. `champiñon.png` and `piña.png` contain the character `ñ`; keep it as-is in the reference, do not rewrite it to `n`.
+
 
 ## Accessibility baseline
 

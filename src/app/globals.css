@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+/*
+  Design tokens sourced from GoodMeal-design-system.md (colección "Colors",
+  92 variables leídas vía Figma Plugin API). No hay colección Size/Border
+  Width en Figma, así que radios/espaciado vienen de medir los nodos reales
+  (ver sección 3 de ese doc). La grilla de spacing por defecto de Tailwind
+  (4px base) ya coincide con esos valores, así que no se sobreescribe.
+*/
+@theme {
+  --font-sans: var(--font-axiforma), ui-sans-serif, system-ui, sans-serif;
+
+  /* pink/brand — color primario de marca y de acción */
+  --color-brand: #fa27a3;
+  --color-brand-1: #fde7f4;
+  --color-brand-2: #ffceea;
+  --color-brand-3: #fdbce2;
+  --color-brand-4: #fc6ec1;
+  --color-brand-5: #fa27a3;
+  --color-brand-6: #e5078a;
+  --color-brand-7: #ca0378;
+  --color-brand-8: #9a005b;
+  --color-brand-9: #700042;
+
+  /* neutros — superficies y texto de UI */
+  --color-neutro-1: #fbfcff;
+  --color-neutro-2: #fafafc;
+  --color-neutro-3: #f8f9fb;
+  --color-neutro-4: #eeeef5;
+  --color-neutro-5: #e6e8f1;
+  --color-neutro-6: #d3d5e2;
+  --color-neutro-7: #babed2;
+  --color-neutro-8: #7b7f98;
+  --color-neutro-9: #495067;
+
+  /* Blue A/grey — escala oscura, texto primario */
+  --color-ink-1: #e4e7ec;
+  --color-ink-2: #d0d5dd;
+  --color-ink-3: #8590a0;
+  --color-ink-4: #606a79;
+  --color-ink-5: #3c444f;
+  --color-ink-6: #38404a;
+  --color-ink-7: #2d333b;
+  --color-ink-8: #22262d;
+  --color-ink-9: #1a1e23;
+
+  /* red — estados de error */
+  --color-red-1: #ffeded;
+  --color-red-2: #fdc6c6;
+  --color-red-3: #fdabab;
+  --color-red-4: #fc8484;
+  --color-red-5: #fa4848;
+  --color-red-6: #f63333;
+  --color-red-7: #e51313;
+  --color-red-8: #c60202;
+  --color-red-9: #940000;
+
+  /* green/aqua + verde — éxito, salud */
+  --color-aqua-1: #eefbf8;
+  --color-aqua-2: #d7faf2;
+  --color-aqua-3: #b6f2e4;
+  --color-aqua-4: #82e8d0;
+  --color-aqua-5: #54d9ba;
+  --color-aqua-6: #67cfb6;
+  --color-aqua-7: #56baa2;
+  --color-aqua-8: #3a9882;
+  --color-aqua-9: #268871;
+  --color-green-1: #ebfaf3;
+  --color-green-2: #c1f0d8;
+  --color-green-3: #a3e9c6;
+  --color-green-4: #78dfab;
+  --color-green-5: #36cf82;
+
+  /* acentos temáticos (tags de categoría) */
+  --color-amber-1: #fff9e8;
+  --color-amber-2: #feedb8;
+  --color-amber-3: #ffe79b;
+  --color-amber-4: #ffdf7a;
+  --color-amber-5: #ffd755;
+  --color-amber-6: #ffd13d;
+  --color-amber-7: #fcc822;
+  --color-amber-8: #f2ba07;
+  --color-amber-9: #e9b200;
+
+  --radius-card: 16px;
+}
+
+body {
+  color: var(--color-ink-9);
+}

@@ -1,6 +1,28 @@
 .claude/
 .DS_Store
-node_modules/
 .env
 .env.local
-.vercel/
+.env*.local
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# misc
+*.pem
+npm-debug.log*
