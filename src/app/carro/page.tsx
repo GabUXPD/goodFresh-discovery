@@ -14,6 +14,7 @@ import { useCart } from "@/context/CartContext";
 
 const CART_PINK = "#ff18a6";
 const MIN_TOTAL = 12000;
+const FREE_SHIPPING_THRESHOLD = 40000;
 
 function formatPrice(value: number) {
   return `$${new Intl.NumberFormat("es-CL").format(value)}`;
@@ -23,6 +24,7 @@ export default function CarroPage() {
   const cart = useCart();
   const router = useRouter();
   const isBelowMinimum = cart.items.length > 0 && cart.total < MIN_TOTAL;
+  const hasFreeShipping = cart.total >= FREE_SHIPPING_THRESHOLD;
   // Si el carro tiene una caja activa (el usuario armó "Caja ensalada", "Caja
   // frutas" o "Caja completa"), se vuelve a esa misma caja. Si los productos
   // vienen solo de "O elige producto a producto" en la tienda (sin caja
@@ -114,10 +116,10 @@ export default function CarroPage() {
         </div>
       )}
 
-      <div className="flex-1" />
+      <div className={`shrink-0 ${isBelowMinimum ? "h-[260px]" : "h-[160px]"}`} />
 
       {/* Barra inferior */}
-      <div className="border-t-8 border-[#f5f5f7] bg-white px-4 pt-4 pb-3">
+      <div className="fixed inset-x-0 bottom-0 z-10 mx-auto w-full max-w-[430px] border-t-8 border-[#f5f5f7] bg-white px-4 pt-4 pb-3">
         {isBelowMinimum && (
           <div className="mb-4 flex flex-col">
             <div className="flex items-start gap-2 rounded-lg bg-[#fff9e8] py-2 pr-2 pl-1">
@@ -144,7 +146,13 @@ export default function CarroPage() {
             <p className="text-base font-semibold" style={{ color: CART_PINK }}>
               {formatPrice(cart.total)}
             </p>
-            <p className="text-[10px] text-aqua-7">Envío gratis desde $40.000</p>
+            {hasFreeShipping ? (
+              <span className="flex items-center gap-1 rounded-full bg-aqua-4 px-2 py-0.5 text-[10px] text-black">
+                🥳 ¡Ya tienes el envío gratis!
+              </span>
+            ) : (
+              <p className="text-[10px] text-aqua-7">Envío gratis desde $40.000</p>
+            )}
           </div>
         </div>
         <button

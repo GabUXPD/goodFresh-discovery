@@ -9,7 +9,15 @@ import { useCart } from "@/context/CartContext";
 // Contenido y estructura verificados contra el nodo de Figma "Compra exitosa"
 // (node-id 527-7681, archivo "Nuevos negocios").
 
-const PURCHASE_CASHBACK = 550;
+// Cashback fijo por caja comprada; si la compra no viene de una caja (solo
+// productos sueltos de "elige producto a producto"), se gana $20 por cada
+// producto agregado al carro.
+const BOX_CASHBACK: Record<string, number> = {
+  "caja-ensaladas": 550,
+  "caja-frutas": 500,
+  "caja-completa": 1750,
+};
+const STANDALONE_CASHBACK_PER_ITEM = 20;
 const PREVIOUS_ACCUMULATED_CASHBACK = 1450;
 
 function formatPrice(value: number) {
@@ -19,7 +27,10 @@ function formatPrice(value: number) {
 export default function CompraExitosaPage() {
   const cart = useCart();
   const router = useRouter();
-  const totalAccumulated = PREVIOUS_ACCUMULATED_CASHBACK + PURCHASE_CASHBACK;
+  const purchaseCashback = cart.activeBoxId
+    ? (BOX_CASHBACK[cart.activeBoxId] ?? 0)
+    : cart.items.length * STANDALONE_CASHBACK_PER_ITEM;
+  const totalAccumulated = PREVIOUS_ACCUMULATED_CASHBACK + purchaseCashback;
 
   useEffect(() => {
     cart.saveLastOrder();
@@ -54,7 +65,7 @@ export default function CompraExitosaPage() {
         <div className="flex w-full gap-2">
           <div className="relative flex flex-1 flex-col items-start justify-center gap-1 overflow-hidden rounded-xl bg-[#feedb8] p-2 shadow-[2px_2px_6px_rgba(0,0,0,0.04)]">
             <p className="text-xs font-medium text-[#232321]">Con la compra ganaste</p>
-            <p className="text-xl font-extrabold text-[#232321]">{formatPrice(PURCHASE_CASHBACK)}</p>
+            <p className="text-xl font-extrabold text-[#232321]">{formatPrice(purchaseCashback)}</p>
             <p className="text-xs font-medium text-[#232321]">Cashback</p>
             <div className="absolute right-1 bottom-1 h-9 w-9">
               <Image src="/images/coin-cashback.png" alt="" fill className="object-contain" />

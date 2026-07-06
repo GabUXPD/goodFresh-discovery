@@ -1,8 +1,9 @@
 import Image from "next/image";
-import { BellIcon, CartIcon, ChevronLeftIcon, CoinsIcon, DeliveryIcon, LeafIcon } from "@/components/icons";
+import { BellIcon, ChevronLeftIcon, CoinsIcon, DeliveryIcon, LeafIcon } from "@/components/icons";
 import { type Box } from "@/components/BoxCard";
 import { type Product } from "@/components/ProductCard";
 import { BottomCartBar } from "@/components/BottomCartBar";
+import { HeaderCartButton } from "@/components/HeaderCartButton";
 import { StoreContent } from "@/components/StoreContent";
 import { catalog } from "@/data/catalog";
 
@@ -85,13 +86,7 @@ export default function TiendaGoodFreshPage() {
             >
               <BellIcon className="h-5 w-5" />
             </button>
-            <button
-              type="button"
-              aria-label="Carrito"
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-ink-9 shadow-sm"
-            >
-              <CartIcon className="h-5 w-5" />
-            </button>
+            <HeaderCartButton />
           </div>
         </div>
         <div className="absolute inset-x-4 bottom-3 flex w-fit items-center gap-1 rounded-full bg-amber-5 px-2 py-0.5 text-xs font-semibold text-neutro-9">

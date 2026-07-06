@@ -31,6 +31,7 @@ const SHIPPING_COST = 2990;
 const SERVICE_FEE = 140;
 const DISCOUNT = 0;
 const AVAILABLE_CREDITS = 30000;
+const FREE_SHIPPING_THRESHOLD = 40000;
 
 function formatPrice(value: number) {
   return `$${new Intl.NumberFormat("es-CL").format(value)}`;
@@ -48,7 +49,9 @@ export default function ConfirmacionCompraPage() {
 
   const selectedAddress = SAVED_ADDRESSES.find((a) => a.id === selectedAddressId) ?? SAVED_ADDRESSES[0];
 
-  const subtotal = cart.total + SHIPPING_COST + SERVICE_FEE - DISCOUNT;
+  const hasFreeShipping = cart.total >= FREE_SHIPPING_THRESHOLD;
+  const shippingCost = hasFreeShipping ? 0 : SHIPPING_COST;
+  const subtotal = cart.total + shippingCost + SERVICE_FEE - DISCOUNT;
   const creditsApplied = creditsSelected ? Math.min(subtotal, AVAILABLE_CREDITS) : 0;
   const total = subtotal - creditsApplied;
 
@@ -147,7 +150,7 @@ export default function ConfirmacionCompraPage() {
                 </span>
                 <span className="text-xs text-neutro-9">24 - 48 horas</span>
               </div>
-              <span className="text-xs text-neutro-9">{formatPrice(SHIPPING_COST)}</span>
+              <span className="text-xs text-neutro-9">{formatPrice(shippingCost)}</span>
             </button>
           </div>
         </div>
@@ -207,7 +210,7 @@ export default function ConfirmacionCompraPage() {
           </div>
           <div className="flex items-start justify-between text-[#9f9fad]">
             <span>Envío</span>
-            <span>{formatPrice(SHIPPING_COST)}</span>
+            <span>{formatPrice(shippingCost)}</span>
           </div>
           <div className="flex items-start justify-between text-[#9f9fad]">
             <span className="flex items-center gap-1">
