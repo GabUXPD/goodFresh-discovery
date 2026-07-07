@@ -65,13 +65,6 @@ export default function ConfirmacionCompraPage() {
         <h1 className="text-base font-semibold text-ink-9">Confirmación de compra</h1>
       </div>
 
-      {/* Aviso de reserva */}
-      <div className="bg-ink-6 px-4">
-        <div className="flex h-[29px] items-center justify-center rounded-full">
-          <p className="text-xs font-medium text-white">Tienes 00 : 09 : 45 para concretar tu compra</p>
-        </div>
-      </div>
-
       {/* Resumen */}
       <div className="bg-white">
         <button
