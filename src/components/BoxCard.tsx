@@ -23,19 +23,13 @@ export function BoxCard({ box }: { box: Box }) {
       <div className="flex flex-col gap-1 px-3">
         <div className="flex items-start justify-between gap-2 pt-2">
           <h3 className="truncate text-xs font-bold text-ink-9">{box.name}</h3>
-          {box.cashback && (
-            <span className="shrink-0 rounded-full bg-[#ffd755] px-1 py-0.5 text-[10px] text-black">
-              {box.cashback} cashback
-            </span>
-          )}
         </div>
         <div className="flex items-end justify-between gap-2">
           <div className="flex flex-col">
             <div className="flex items-center gap-1">
-              <span className="text-[10px] font-medium text-ink-4">Desde:</span>
+              <span className="text-[14px] font-medium text-ink-4">Desde:</span>
               <span className="text-sm font-black text-ink-9">{box.price}</span>
             </div>
-            <span className="text-[10px] text-ink-3">{box.itemCount}</span>
           </div>
           <span className={armarClassName}>
             Armar

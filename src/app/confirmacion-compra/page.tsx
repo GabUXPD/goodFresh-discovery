@@ -27,7 +27,7 @@ import { SAVED_ADDRESSES } from "@/data/addresses";
 // (node-id 505-24248, archivo "Nuevos negocios", pantalla "Confirmación de compra").
 // El modal de direcciones sigue el node-id 518-5150.
 
-const SHIPPING_COST = 2990;
+const SHIPPING_COST = 2400;
 const SERVICE_FEE = 140;
 const DISCOUNT = 0;
 const AVAILABLE_CREDITS = 30000;

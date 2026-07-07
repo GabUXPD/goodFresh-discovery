@@ -72,11 +72,6 @@ export function ProductCard({ product }: { product: Product }) {
         </button>
       )}
       <p className="text-sm font-semibold text-[#232321]">{formatPrice(product.price)}</p>
-      {product.cashback && (
-        <span className="w-fit rounded-full bg-[#ffd755] px-2 py-0.5 text-[10px] text-black">
-          {product.cashback} cashback
-        </span>
-      )}
       <p className="text-center text-xs text-ink-6" style={{ lineHeight: 1.7 }}>
         {product.name} {product.unit.replace("1 unidad", "1 un.")}
       </p>

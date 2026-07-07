@@ -122,22 +122,14 @@ export default function CarroPage() {
       <div className={`shrink-0 ${isBelowMinimum ? "h-[260px]" : "h-[160px]"}`} />
 
       {/* Barra inferior */}
-      <div className="fixed inset-x-0 bottom-0 z-10 mx-auto w-full max-w-[430px] border-t-8 border-[#f5f5f7] bg-white px-4 pt-4 pb-3">
+      <div className="fixed inset-x-0 bottom-0 z-10 mx-auto flex w-full max-w-[430px] flex-col gap-4 border-t-8 border-[#f5f5f7] bg-white px-4 pt-4 pb-3">
         {isBelowMinimum && (
-          <div className="mb-4 flex flex-col">
-            <div className="flex items-start gap-2 rounded-lg bg-[#fff9e8] py-2 pr-2 pl-1">
-              <WarningIcon className="h-6 w-6 shrink-0 text-[#c36800]" />
-              <p className="text-xs leading-relaxed text-[#c36800]">
-                La caja tiene un mínimo de <span className="font-semibold">{formatPrice(MIN_TOTAL)}</span>. Agrega más
-                productos o aumenta las cantidades para continuar.
-              </p>
-            </div>
-            <Link
-              href={boxHref}
-              className="mt-2 flex w-full items-center justify-center rounded-full border border-brand bg-white px-3 py-[11px] text-[14px] leading-[1.5] font-medium whitespace-nowrap text-brand shadow-sm"
-            >
-              Agregar productos
-            </Link>
+          <div className="flex items-start gap-1 rounded-lg bg-[#fff9e8] py-2 pr-2 pl-1">
+            <WarningIcon className="h-6 w-6 shrink-0 text-[#c36800]" />
+            <p className="text-[12px] leading-[1.7] text-[#c36800]">
+              La caja tiene un mínimo de <span className="leading-[1.5] font-semibold">{formatPrice(MIN_TOTAL)}</span>. Agrega más
+              productos o aumenta las cantidades para continuar.
+            </p>
           </div>
         )}
         <div className="flex items-center justify-between">
@@ -157,18 +149,22 @@ export default function CarroPage() {
             )}
           </div>
         </div>
-        <button
-          type="button"
-          disabled={isBelowMinimum}
-          onClick={() => router.push("/confirmacion-compra")}
-          className={
-            isBelowMinimum
-              ? "mt-4 flex w-full items-center justify-center rounded-full border border-neutro-3 bg-neutro-3 px-6 py-4 text-sm font-bold text-neutro-7"
-              : "mt-4 flex w-full items-center justify-center rounded-full bg-brand px-6 py-4 text-sm font-bold text-brand-1 shadow-sm"
-          }
-        >
-          Comprar
-        </button>
+        {isBelowMinimum ? (
+          <Link
+            href={boxHref}
+            className="flex w-full items-center justify-center rounded-full border border-brand bg-white px-6 py-4 text-[14px] leading-[1.5] font-bold whitespace-nowrap text-brand"
+          >
+            Agregar productos
+          </Link>
+        ) : (
+          <button
+            type="button"
+            onClick={() => router.push("/confirmacion-compra")}
+            className="flex w-full items-center justify-center rounded-full bg-brand px-6 py-4 text-sm font-bold text-brand-1 shadow-sm"
+          >
+            Comprar
+          </button>
+        )}
       </div>
     </main>
   );

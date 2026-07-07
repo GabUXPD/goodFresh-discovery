@@ -23,17 +23,17 @@ type SuggestedItem = {
 };
 
 const initialIncluded: IncludedItem[] = [
-  { id: "platano", name: "Plátano", unit: "1 kilo", price: 1790, image: "/images/platano.png", quantity: 1 },
-  { id: "naranjas", name: "Naranjas", unit: "1 kilo", price: 2290, image: "/images/naranjas.png", quantity: 1 },
-  { id: "frutillas", name: "Frutillas", unit: "500 gr.", price: 5317, image: "/images/frutillas.png", quantity: 1 },
-  { id: "manzana-fuji", name: "Manzana Fuji", unit: "1 kilo", price: 2190, image: "/images/manzanaFuji.png", quantity: 1 },
+  { id: "platano", name: "Plátano", unit: "1 kilo", price: 1556, image: "/images/platano.png", quantity: 1 },
+  { id: "naranjas", name: "Naranjas", unit: "1 kilo", price: 1500, image: "/images/naranjas.png", quantity: 1 },
+  { id: "frutillas", name: "Frutillas", unit: "500 gr.", price: 1778, image: "/images/frutillas.png", quantity: 1 },
+  { id: "manzana-fuji", name: "Manzana Fuji", unit: "1 kilo", price: 2111, image: "/images/manzanaFuji.png", quantity: 1 },
 ];
 
 const initialSuggested: SuggestedItem[] = [
-  { id: "kiwi", name: "Kiwi", unit: "500 gr.", price: 1500, image: "/images/kiwi.png" },
-  { id: "uva-roja", name: "Uva Roja", unit: "500 gr.", price: 2245, image: "/images/uva-roja.jpg" },
-  { id: "mandarina", name: "Mandarina", unit: "500 gr.", price: 1345, image: "/images/mandarinas.png" },
-  { id: "pera", name: "Pera", unit: "500 gr.", price: 2290, image: "/images/pera.png" },
+  { id: "kiwi", name: "Kiwi", unit: "500 gr.", price: 1111, image: "/images/kiwi.png" },
+  { id: "uva-roja", name: "Uva Roja", unit: "500 gr.", price: 1556, image: "/images/uva-roja.jpg" },
+  { id: "mandarina", name: "Mandarina", unit: "500 gr.", price: 1333, image: "/images/mandarinas.png" },
+  { id: "pera", name: "Pera", unit: "500 gr.", price: 2000, image: "/images/pera.png" },
 ];
 
 function formatPrice(value: number) {
@@ -135,7 +135,6 @@ export default function CajaFrutasPage() {
       <div className="flex flex-col gap-4 border-b border-[#f5f5f7] px-4 pt-4 pb-3.5">
         <div className="flex w-full items-center gap-4">
           <h1 className="flex-1 text-xl font-bold text-ink-9">Caja esencial frutas</h1>
-          <span className="shrink-0 rounded-full bg-[#ffd755] px-1 py-0.5 text-[10px] text-black">$550 cashback</span>
         </div>
         <p className="text-[14px] text-ink-9" style={{ lineHeight: 1.7 }}>
           Saca y agrega lo que necesitas

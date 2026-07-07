@@ -24,29 +24,29 @@ type SuggestedItem = {
 };
 
 const initialIncluded: IncludedItem[] = [
-  { id: "cebolla", name: "Cebolla", unit: "1 unidad", price: 430, image: "/images/cebolla.png", quantity: 3 },
-  { id: "brocoli", name: "Brócoli", unit: "1 unidad", price: 1990, image: "/images/brocoli.png", quantity: 1 },
-  { id: "lechuga-costina", name: "Lechuga Costina", unit: "1 unidad", price: 1390, image: "/images/lechuga.png", quantity: 1 },
-  { id: "limon", name: "Limón", unit: "1 kilo", price: 1690, image: "/images/limon.png", quantity: 1 },
-  { id: "palta-hass-chilena", name: "Palta Hass Chilena", unit: "1 kilo", price: 6500, image: "/images/palta.png", quantity: 1, badge: "Temporada", ripeness: "Para hoy" },
-  { id: "papa", name: "Papa", unit: "1 kilo", price: 1090, image: "/images/papas.png", quantity: 1 },
-  { id: "pimenton-verde", name: "Pimentón Verde", unit: "1 unidad", price: 990, image: "/images/pimenton.png", quantity: 1 },
-  { id: "zanahoria", name: "Zanahoria", unit: "1 kilo", price: 1290, image: "/images/zanahoria.png", quantity: 1 },
-  { id: "zapallo-italiano", name: "Zapallo Italiano", unit: "1 unidad", price: 790, image: "/images/zapallo-italiano.png", quantity: 2 },
-  { id: "zapallo-camote", name: "Zapallo Camote", unit: "1 corte", price: 1300, image: "/images/zapallo.png", quantity: 1 },
-  { id: "ajo", name: "Ajo", unit: "1 unidad", price: 300, image: "/images/ajo.png", quantity: 1 },
-  { id: "cilantro", name: "Cilantro", unit: "1 paquete", price: 990, image: "/images/cilantro.png", quantity: 1 },
-  { id: "platano", name: "Plátano", unit: "1 kilo", price: 1790, image: "/images/platano.png", quantity: 1 },
-  { id: "manzana-fuji", name: "Manzana Fuji", unit: "1 kilo", price: 2190, image: "/images/manzanaFuji.png", quantity: 1 },
-  { id: "naranjas", name: "Naranjas", unit: "1 kilo", price: 2290, image: "/images/naranjas.png", quantity: 1, badge: "Temporada" },
-  { id: "huevo-primera-color", name: "Huevo Primera Color", unit: "12 unidades", price: 4800, image: "/images/huevosColor.png", quantity: 1 },
-  { id: "tomate-larga-vida", name: "Tomate Larga Vida", unit: "1 kilo", price: 1990, image: "/images/tomate.png", quantity: 1 },
+  { id: "cebolla", name: "Cebolla", unit: "1 unidad", price: 278, image: "/images/cebolla.png", quantity: 3 },
+  { id: "brocoli", name: "Brócoli", unit: "1 unidad", price: 1556, image: "/images/brocoli.png", quantity: 1 },
+  { id: "lechuga-costina", name: "Lechuga Costina", unit: "1 unidad", price: 1111, image: "/images/lechuga.png", quantity: 1 },
+  { id: "limon", name: "Limón", unit: "1 kilo", price: 778, image: "/images/limon.png", quantity: 1 },
+  { id: "palta-hass-chilena", name: "Palta Hass Chilena", unit: "1 kilo", price: 6444, image: "/images/palta.png", quantity: 1, badge: "Temporada", ripeness: "Para hoy" },
+  { id: "papa", name: "Papa", unit: "1 kilo", price: 944, image: "/images/papas.png", quantity: 1 },
+  { id: "pimenton-verde", name: "Pimentón Verde", unit: "1 unidad", price: 778, image: "/images/pimenton.png", quantity: 1 },
+  { id: "zanahoria", name: "Zanahoria", unit: "1 kilo", price: 889, image: "/images/zanahoria.png", quantity: 1 },
+  { id: "zapallo-italiano", name: "Zapallo Italiano", unit: "1 unidad", price: 667, image: "/images/zapallo-italiano.png", quantity: 2 },
+  { id: "zapallo-camote", name: "Zapallo Camote", unit: "1 corte", price: 1111, image: "/images/zapallo.png", quantity: 1 },
+  { id: "ajo", name: "Ajo", unit: "1 unidad", price: 222, image: "/images/ajo.png", quantity: 1 },
+  { id: "cilantro", name: "Cilantro", unit: "1 paquete", price: 722, image: "/images/cilantro.png", quantity: 1 },
+  { id: "platano", name: "Plátano", unit: "1 kilo", price: 1556, image: "/images/platano.png", quantity: 1 },
+  { id: "manzana-fuji", name: "Manzana Fuji", unit: "1 kilo", price: 2111, image: "/images/manzanaFuji.png", quantity: 1 },
+  { id: "naranjas", name: "Naranjas", unit: "1 kilo", price: 1500, image: "/images/naranjas.png", quantity: 1, badge: "Temporada" },
+  { id: "huevo-primera-color-caja-30", name: "Huevo Primera Color", unit: "caja de 30 unidades", price: 10056, image: "/images/huevosColor.png", quantity: 1 },
+  { id: "tomate-larga-vida", name: "Tomate Larga Vida", unit: "1 kilo", price: 1667, image: "/images/tomate.png", quantity: 1 },
 ];
 
 const initialSuggested: SuggestedItem[] = [
-  { id: "pepino", name: "Pepino", unit: "1 unidad", price: 430, image: "/images/pepino.png" },
-  { id: "apio", name: "Apio", unit: "1 unidad", price: 1990, image: "/images/apio.png" },
-  { id: "champinon", name: "Champiñon", unit: "1 bandeja", price: 1990, image: "/images/champiñon.png" },
+  { id: "pepino", name: "Pepino", unit: "1 unidad", price: 722, image: "/images/pepino.png" },
+  { id: "apio", name: "Apio", unit: "1 unidad", price: 1556, image: "/images/apio.png" },
+  { id: "champinon", name: "Champiñon", unit: "1 bandeja", price: 1667, image: "/images/champiñon.png" },
 ];
 
 function formatPrice(value: number) {
@@ -148,7 +148,6 @@ export default function CajaCompletaPage() {
       <div className="flex flex-col gap-4 border-b border-[#f5f5f7] px-4 pt-4 pb-3.5">
         <div className="flex w-full items-center gap-4">
           <h1 className="flex-1 text-xl font-bold text-ink-9">Caja esencial completa</h1>
-          <span className="shrink-0 rounded-full bg-[#ffd755] px-1 py-0.5 text-[10px] text-black">$1.750 cashback</span>
         </div>
         <p className="text-[14px] text-ink-9" style={{ lineHeight: 1.7 }}>
           Saca y agrega lo que necesitas

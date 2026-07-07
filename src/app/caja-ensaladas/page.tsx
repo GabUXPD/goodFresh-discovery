@@ -24,18 +24,18 @@ type SuggestedItem = {
 };
 
 const initialIncluded: IncludedItem[] = [
-  { id: "lechuga", name: "Lechuga costina", unit: "1 unidad", price: 1390, image: "/images/lechuga.png", quantity: 1 },
-  { id: "pepino", name: "Pepino", unit: "1 unidad", price: 430, image: "/images/pepino.png", quantity: 1 },
-  { id: "palta", name: "Palta hass", unit: "1 kilo", price: 6500, image: "/images/palta.png", quantity: 1, badge: "Temporada", ripeness: "Para hoy" },
-  { id: "tomate", name: "Tomates", unit: "1 kilo", price: 1990, image: "/images/tomate.png", quantity: 1 },
-  { id: "limon", name: "Limón", unit: "1 kilo", price: 1690, image: "/images/limon.png", quantity: 1 },
+  { id: "lechuga", name: "Lechuga costina", unit: "1 unidad", price: 1111, image: "/images/lechuga.png", quantity: 1 },
+  { id: "pepino", name: "Pepino", unit: "1 unidad", price: 722, image: "/images/pepino.png", quantity: 1 },
+  { id: "palta", name: "Palta hass", unit: "1 kilo", price: 6444, image: "/images/palta.png", quantity: 1, badge: "Temporada", ripeness: "Para hoy" },
+  { id: "tomate", name: "Tomates", unit: "1 kilo", price: 1667, image: "/images/tomate.png", quantity: 1 },
+  { id: "limon", name: "Limón", unit: "1 kilo", price: 778, image: "/images/limon.png", quantity: 1 },
 ];
 
 const initialSuggested: SuggestedItem[] = [
-  { id: "acelga", name: "Acelga", unit: "1 paquete", price: 1290, image: "/images/acelga.png" },
-  { id: "zanahoria", name: "Zanahoria", unit: "1 kilo", price: 1290, image: "/images/zanahoria.png" },
-  { id: "apio", name: "Apio", unit: "1 unidad", price: 1990, image: "/images/apio.png" },
-  { id: "aji-verde", name: "Ají Verde Infierno", unit: "200 gr.", price: 1112, image: "/images/aji-verde.png" },
+  { id: "acelga", name: "Acelga", unit: "1 paquete", price: 944, image: "/images/acelga.png" },
+  { id: "zanahoria", name: "Zanahoria", unit: "1 kilo", price: 889, image: "/images/zanahoria.png" },
+  { id: "apio", name: "Apio", unit: "1 unidad", price: 1556, image: "/images/apio.png" },
+  { id: "aji-verde", name: "Ají Verde Infierno", unit: "200 gr.", price: 889, image: "/images/aji-verde.png" },
 ];
 
 function formatPrice(value: number) {
@@ -137,7 +137,6 @@ export default function CajaEnsaladasPage() {
       <div className="flex flex-col gap-4 border-b border-[#f5f5f7] px-4 pt-4 pb-3.5">
         <div className="flex w-full items-center gap-4">
           <h1 className="flex-1 text-xl font-bold text-ink-9">Caja esencial ensaladas</h1>
-          <span className="shrink-0 rounded-full bg-[#ffd755] px-1 py-0.5 text-[10px] text-black">$550 cashback</span>
         </div>
         <p className="text-[14px] text-ink-9" style={{ lineHeight: 1.7 }}>
           Saca y agrega lo que necesitas

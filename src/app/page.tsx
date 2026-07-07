@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { BellIcon, ChevronLeftIcon, CoinsIcon, DeliveryIcon, LeafIcon } from "@/components/icons";
+import { BellIcon, ChevronLeftIcon, DeliveryIcon, LeafIcon } from "@/components/icons";
 import { type Box } from "@/components/BoxCard";
 import { type Product } from "@/components/ProductCard";
 import { BottomCartBar } from "@/components/BottomCartBar";
@@ -13,9 +13,9 @@ import { catalog } from "@/data/catalog";
 // están marcadas hidden="true" en Figma y no se muestran aquí).
 
 const boxes: Box[] = [
-  { name: "Caja esencial ensaladas", image: "/images/cajaVerduras.png", price: "$12.000", itemCount: "5 tipos de productos", cashback: "$550", href: "/caja-ensaladas" },
-  { name: "Caja esencial frutas", image: "/images/cajaFrutas.png", price: "$11.587", itemCount: "4 tipos de productos", cashback: "$550", href: "/caja-frutas" },
-  { name: "Caja esencial completa", image: "/images/cajaCompleta.png", price: "$33.460", itemCount: "17 tipos de productos", cashback: "$1.750", href: "/caja-completa" },
+  { name: "Caja esencial ensaladas", image: "/images/cajaVerduras.png", price: "$10.722", itemCount: "5 tipos de productos", cashback: "$550", href: "/caja-ensaladas" },
+  { name: "Caja esencial frutas", image: "/images/cajaFrutas.png", price: "$6.945", itemCount: "4 tipos de productos", cashback: "$550", href: "/caja-frutas" },
+  { name: "Caja esencial completa", image: "/images/cajaCompleta.png", price: "$33.613", itemCount: "17 tipos de productos", cashback: "$1.750", href: "/caja-completa" },
 ];
 
 // Cashback verificado en Figma para estos 4 productos; el resto usa el
@@ -56,11 +56,11 @@ function interleave<T>(a: T[], b: T[]): T[] {
   return result;
 }
 
-// "LP GF" lista verduras (índices 0-48), luego frutas (49-71) y frutos
-// secos/derivados (72-73).
-const vegetables = catalog.slice(0, 49).map(toProduct);
-const fruits = catalog.slice(49, 72).map(toProduct);
-const nuts = catalog.slice(72).map(toProduct);
+// "LP GF" lista verduras (índices 0-49), luego frutas (50-72) y frutos
+// secos/derivados (73-74).
+const vegetables = catalog.slice(0, 50).map(toProduct);
+const fruits = catalog.slice(50, 73).map(toProduct);
+const nuts = catalog.slice(73).map(toProduct);
 const fruitsAndNuts = [...fruits, ...nuts];
 const products: Product[] = interleave(vegetables, fruitsAndNuts);
 
@@ -68,7 +68,7 @@ export default function TiendaGoodFreshPage() {
   return (
     <main className="flex flex-1 flex-col">
       {/* Foto de portada + header flotante */}
-      <div className="relative h-[195px] w-full shrink-0">
+      <div className="relative h-[160px] w-full shrink-0">
         <Image src="/images/portadaTienda.png" alt="Frutas y verduras frescas en la tienda GoodFresh" fill priority sizes="430px" className="object-cover" />
         <div className="absolute inset-x-0 top-0 flex items-center justify-between p-4">
           <button
@@ -89,10 +89,6 @@ export default function TiendaGoodFreshPage() {
             <HeaderCartButton />
           </div>
         </div>
-        <div className="absolute inset-x-4 bottom-3 flex w-fit items-center gap-1 rounded-full bg-amber-5 px-2 py-0.5 text-xs font-semibold text-neutro-9">
-          <CoinsIcon className="h-3.5 w-3.5" />
-          Gana Créditos GoodMeal
-        </div>
       </div>
 
       {/* Info de la tienda */}
@@ -112,16 +108,18 @@ export default function TiendaGoodFreshPage() {
 
             <div className="flex items-stretch gap-2">
               <div className="w-1 shrink-0 rounded-[10px] bg-brand" />
-              <p className="text-xs text-[#4b5563]" style={{ lineHeight: 1.7 }}>
-                Frutas y verduras de primera selección,
+              <p className="text-[16px] text-[#4b5563]" style={{ lineHeight: 1.2 }}>
+                Directo de la vega a tu casa,
                 <br />
-                directo de la vega a tu casa.
+                <span className="font-bold" style={{ lineHeight: 1.5 }}>
+                  a precio mayorista
+                </span>
               </p>
             </div>
           </div>
 
-          <div className="relative h-16 w-16 shrink-0">
-            <Image src="/images/goodFresh-logo.png" alt="Logo GoodFresh" fill sizes="64px" className="object-contain" />
+          <div className="relative h-[72px] w-[72px] shrink-0">
+            <Image src="/images/goodFresh-logo.png" alt="Logo GoodFresh" fill sizes="72px" className="object-contain" />
           </div>
         </div>
 
@@ -129,7 +127,7 @@ export default function TiendaGoodFreshPage() {
           <div className="flex items-center px-2 py-1">
             <div className="flex flex-col gap-0.5">
               <p className="text-xs text-ink-4" style={{ lineHeight: 1.7 }}>
-                Lunes a sábado - envío: $2.990
+                Lunes a sábado - envío: $2.400
               </p>
               <span className="w-fit rounded-full bg-brand-1 px-1.5 py-0.5 text-[10px] text-brand">Envío gratis desde $40.000</span>
             </div>
