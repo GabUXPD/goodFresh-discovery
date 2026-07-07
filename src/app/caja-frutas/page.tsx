@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -42,25 +42,16 @@ function formatPrice(value: number) {
 
 export default function CajaFrutasPage() {
   const cart = useCart();
-  const included = cart.items;
+  // Mientras el usuario arma la caja, los cambios viven en estado local: el
+  // carro global solo se actualiza al presionar "Agregar al carrito".
+  const [included, setIncluded] = useState<IncludedItem[]>(() =>
+    cart.activeBoxId === "caja-frutas" ? cart.items : initialIncluded
+  );
   const [suggested, setSuggested] = useState(initialSuggested);
   const [query, setQuery] = useState("");
   const router = useRouter();
 
-  // Si el carro no está armando esta misma caja (primera visita, o el usuario
-  // venía de armar otra caja distinta), se llena con los productos base de la
-  // Caja frutas. Si ya estaba armando esta caja (volvió del carro), se
-  // respeta lo que ya armó.
-  useEffect(() => {
-    if (cart.activeBoxId !== "caja-frutas") {
-      cart.setItems(initialIncluded);
-      cart.setActiveBoxId("caja-frutas");
-      cart.setIsRepeatOrder(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const total = cart.total;
+  const total = included.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const includedIds = new Set(included.map((item) => item.id));
   const searchResults =
     query.trim().length > 0
@@ -68,12 +59,14 @@ export default function CajaFrutasPage() {
       : [];
 
   function updateQuantity(id: string, delta: number) {
-    cart.updateQuantity(id, delta);
+    setIncluded((items) =>
+      items.map((item) => (item.id === id ? { ...item, quantity: Math.max(1, item.quantity + delta) } : item))
+    );
   }
 
   function removeIncluded(id: string) {
     const removed = included.find((item) => item.id === id);
-    cart.setItems((items) => items.filter((item) => item.id !== id));
+    setIncluded((items) => items.filter((item) => item.id !== id));
     if (removed) {
       const { name, unit, price, image } = removed;
       setSuggested((items) => [...items, { id, name, unit, price, image }]);
@@ -81,18 +74,25 @@ export default function CajaFrutasPage() {
   }
 
   function setRipeness(id: string, ripeness: IncludedItem["ripeness"]) {
-    cart.setItems((items) => items.map((item) => (item.id === id ? { ...item, ripeness } : item)));
+    setIncluded((items) => items.map((item) => (item.id === id ? { ...item, ripeness } : item)));
   }
 
   function addSuggested(item: SuggestedItem) {
-    cart.setItems((items) => [...items, { ...item, quantity: 1 }]);
+    setIncluded((items) => [...items, { ...item, quantity: 1 }]);
     setSuggested((items) => items.filter((i) => i.id !== item.id));
   }
 
   function addFromSearch(product: CatalogProduct) {
-    cart.setItems((items) => [...items, { ...product, quantity: 1 }]);
+    setIncluded((items) => [...items, { ...product, quantity: 1 }]);
     setSuggested((items) => items.filter((i) => i.id !== product.id));
     setQuery("");
+  }
+
+  function handleAddToCart() {
+    cart.setItems(included);
+    cart.setActiveBoxId("caja-frutas");
+    cart.setIsRepeatOrder(false);
+    router.push("/carro");
   }
 
   return (
@@ -109,9 +109,15 @@ export default function CajaFrutasPage() {
         <button
           type="button"
           aria-label="Carrito"
-          className="flex h-10 w-10 items-center justify-center rounded-full text-ink-9"
+          onClick={() => router.push("/carro")}
+          className="relative flex h-10 w-10 items-center justify-center rounded-full text-ink-9"
         >
           <CartIcon className="h-5 w-5" />
+          {cart.items.length > 0 && (
+            <span className="absolute top-[-1px] right-[2px] flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[#fa26a3] px-1 text-[9px] font-bold text-white">
+              {cart.items.length}
+            </span>
+          )}
         </button>
       </div>
 
@@ -128,11 +134,11 @@ export default function CajaFrutasPage() {
       {/* Info del pack */}
       <div className="flex flex-col gap-4 border-b border-[#f5f5f7] px-4 pt-4 pb-3.5">
         <div className="flex w-full items-center gap-4">
-          <h1 className="flex-1 text-xl font-bold text-ink-9">Caja frutas</h1>
+          <h1 className="flex-1 text-xl font-bold text-ink-9">Caja esencial frutas</h1>
           <span className="shrink-0 rounded-full bg-[#ffd755] px-1 py-0.5 text-[10px] text-black">$550 cashback</span>
         </div>
-        <p className="text-xs text-ink-9" style={{ lineHeight: 1.7 }}>
-          Saca lo que ya tienes, agrega lo que te falta.
+        <p className="text-[14px] text-ink-9" style={{ lineHeight: 1.7 }}>
+          Saca y agrega lo que necesitas
         </p>
       </div>
 
@@ -140,7 +146,6 @@ export default function CajaFrutasPage() {
       <div className="flex flex-col gap-2 bg-neutro-3 px-4 pt-2 pb-2">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-bold text-ink-9">Productos incluidos</h2>
-          <p className="text-[10px] text-[#4b5563]">Activa o desactiva según lo que necesites</p>
         </div>
 
         {included.map((item) => (
@@ -163,7 +168,12 @@ export default function CajaFrutasPage() {
               <div className="flex items-center gap-2">
                 <p className="text-xs font-bold text-ink-9">{formatPrice(item.price * item.quantity)}</p>
                 <div className="flex w-[100px] items-center justify-between rounded-full border border-neutro-5 bg-white p-1">
-                  <button type="button" aria-label="Restar" onClick={() => updateQuantity(item.id, -1)} className="flex h-6 w-6 items-center justify-center">
+                  <button
+                    type="button"
+                    aria-label={item.quantity <= 1 ? `Quitar ${item.name}` : "Restar"}
+                    onClick={() => (item.quantity <= 1 ? removeIncluded(item.id) : updateQuantity(item.id, -1))}
+                    className="flex h-6 w-6 items-center justify-center"
+                  >
                     <MinusIcon className="h-4 w-4 text-ink-9" />
                   </button>
                   <span className="text-xs font-medium text-ink-9">{item.quantity}</span>
@@ -171,9 +181,6 @@ export default function CajaFrutasPage() {
                     <PlusIcon className="h-4 w-4 text-ink-9" />
                   </button>
                 </div>
-                <button type="button" aria-label={`Quitar ${item.name}`} onClick={() => removeIncluded(item.id)} className="text-brand">
-                  <CloseIcon className="h-6 w-6 rounded-full border border-brand p-1" />
-                </button>
               </div>
             </div>
             {item.ripeness && (
@@ -199,14 +206,14 @@ export default function CajaFrutasPage() {
 
       {/* Buscador */}
       <div className="flex flex-col gap-2 px-4 pt-1 pb-2">
-        <p className="text-center text-xs text-ink-9">¿Quieres agregar algo más?</p>
+        <p className="text-center text-[14px] text-ink-9">¿Quieres agregar algo más?</p>
         <div className="flex w-full items-center gap-1 rounded-full bg-neutro-3 py-0.5 pr-2 pl-3">
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Buscar producto"
-            className="flex-1 bg-transparent text-xs text-ink-9 placeholder:text-neutro-8 focus:outline-none"
+            className="flex-1 bg-transparent text-[14px] text-ink-9 placeholder:text-neutro-8 focus:outline-none"
           />
           {query.trim().length > 0 ? (
             <button
@@ -303,10 +310,10 @@ export default function CajaFrutasPage() {
           </Link>
           <button
             type="button"
-            onClick={() => router.push("/carro")}
+            onClick={handleAddToCart}
             className="flex flex-1 items-center justify-center rounded-full bg-brand px-5 py-3 text-sm font-medium text-brand-1 shadow-sm"
           >
-            Ir a pagar
+            Agregar al carrito
           </button>
         </div>
       </div>

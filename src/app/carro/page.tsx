@@ -110,7 +110,10 @@ export default function CarroPage() {
       {/* Link "Agregar productos" al repetir un pedido anterior */}
       {cart.isRepeatOrder && !isBelowMinimum && cart.items.length > 0 && (
         <div className="flex justify-center px-4 pt-2">
-          <Link href={boxHref} className="rounded-full px-3 py-2 text-xs font-medium" style={{ color: CART_PINK }}>
+          <Link
+            href={boxHref}
+            className="mt-2 flex w-full items-center justify-center rounded-full border border-brand bg-white px-3 py-[11px] text-[14px] leading-[1.5] font-medium whitespace-nowrap text-brand shadow-sm"
+          >
             Agregar productos
           </Link>
         </div>
@@ -131,8 +134,7 @@ export default function CarroPage() {
             </div>
             <Link
               href={boxHref}
-              className="self-center rounded-full py-2 pl-3 text-xs font-medium"
-              style={{ color: CART_PINK }}
+              className="mt-2 flex w-full items-center justify-center rounded-full border border-brand bg-white px-3 py-[11px] text-[14px] leading-[1.5] font-medium whitespace-nowrap text-brand shadow-sm"
             >
               Agregar productos
             </Link>
