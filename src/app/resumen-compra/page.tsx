@@ -77,11 +77,7 @@ export default function ResumenCompraPage() {
 
       <div className="flex flex-col items-center gap-4">
         <SwirlIcon className="h-[53px] w-[52px] animate-spin" />
-        <p className="text-center text-sm font-medium text-brand">
-          Cada rescate cuenta,
-          <br />
-          juntos salvaremos el mundo
-        </p>
+        <p className="text-center text-sm font-medium text-brand">Estamos procesando tu compra</p>
       </div>
 
       <p className="mt-12 text-center text-sm font-semibold text-neutro-8 underline">Cancelar compra</p>
