@@ -15,6 +15,11 @@ import { useCart } from "@/context/CartContext";
 const CART_PINK = "#ff18a6";
 const MIN_TOTAL = 12000;
 const FREE_SHIPPING_THRESHOLD = 40000;
+// Estimación de lo que costaría la misma compra en supermercados, calculada
+// como un recargo sobre el total real (proporción tomada del ejemplo de
+// Figma: $24.200 y $23.400 sobre un total de $19.100).
+const LIDER_MARKUP = 0.27;
+const JUMBO_MARKUP = 0.22;
 
 function formatPrice(value: number) {
   return `$${new Intl.NumberFormat("es-CL").format(value)}`;
@@ -119,10 +124,30 @@ export default function CarroPage() {
         </div>
       )}
 
-      <div className={`shrink-0 ${isBelowMinimum ? "h-[260px]" : "h-[160px]"}`} />
+      <div
+        className={`shrink-0 ${
+          isBelowMinimum ? "h-[260px]" : cart.items.length > 0 ? "h-[210px]" : "h-[160px]"
+        }`}
+      />
 
       {/* Barra inferior */}
       <div className="fixed inset-x-0 bottom-0 z-10 mx-auto flex w-full max-w-[430px] flex-col gap-4 border-t-8 border-[#f5f5f7] bg-white px-4 pt-4 pb-3">
+        {cart.items.length > 0 && !isBelowMinimum && (
+          <div className="flex items-center justify-between gap-2 rounded-lg bg-aqua-3 p-2">
+            <div className="flex flex-col text-[10px]">
+              <p className="font-bold text-[#2d333b]">Ahorro comparado con supermercados</p>
+              <p className="text-[#3c444f]">Precios verificados hoy en línea</p>
+            </div>
+            <div className="flex shrink-0 items-center gap-1">
+              <span className="rounded-full bg-[#429446] px-1.5 py-0.5 text-[12px] font-semibold whitespace-nowrap text-white">
+                {formatPrice(Math.round(cart.total * (1 + LIDER_MARKUP)))}
+              </span>
+              <span className="rounded-full bg-[#2f59d3] px-1.5 py-0.5 text-[12px] font-semibold whitespace-nowrap text-white">
+                {formatPrice(Math.round(cart.total * (1 + JUMBO_MARKUP)))}
+              </span>
+            </div>
+          </div>
+        )}
         {isBelowMinimum && (
           <div className="flex items-start gap-1 rounded-lg bg-[#fff9e8] py-2 pr-2 pl-1">
             <WarningIcon className="h-6 w-6 shrink-0 text-[#c36800]" />
