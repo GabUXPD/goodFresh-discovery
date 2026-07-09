@@ -54,7 +54,7 @@ export default function CompraExitosaPage() {
           className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#f6279f] px-4 py-3"
         >
           <ShareIcon className="h-6 w-6 text-white" />
-          <span className="text-sm font-medium text-white">Recomiéndale a tus amigos comprar en GoodFresh</span>
+          <span className="text-sm font-medium text-white">Recomienda GoodFresh a tus amigos</span>
         </button>
         <p className="text-sm font-extrabold text-[#232321] underline">Ir a mi orden</p>
         <button
