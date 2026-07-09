@@ -134,9 +134,9 @@ export default function CarroPage() {
       <div className="fixed inset-x-0 bottom-0 z-10 mx-auto flex w-full max-w-[430px] flex-col gap-4 border-t-8 border-[#f5f5f7] bg-white px-4 pt-4 pb-3">
         {cart.items.length > 0 && !isBelowMinimum && (
           <div className="flex items-center justify-between gap-2 rounded-lg bg-aqua-3 p-2">
-            <div className="flex flex-col text-[10px]">
-              <p className="font-bold text-[#2d333b]">Ahorro comparado con supermercados</p>
-              <p className="text-[#3c444f]">Precios verificados hoy en línea</p>
+            <div className="flex flex-col">
+              <p className="text-[14px] font-bold text-[#2d333b]">Este mismo carro en supermercados</p>
+              <p className="text-[10px] text-[#3c444f]">Precios verificados hoy en línea</p>
             </div>
             <div className="flex shrink-0 items-center gap-1">
               <span className="rounded-full bg-[#429446] px-1.5 py-0.5 text-[12px] font-semibold whitespace-nowrap text-white">
