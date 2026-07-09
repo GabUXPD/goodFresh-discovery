@@ -39,7 +39,7 @@ const initialIncluded: IncludedItem[] = [
   { id: "platano", name: "Plátano", unit: "1 kilo", price: 1556, image: "/images/platano.png", quantity: 1 },
   { id: "manzana-fuji", name: "Manzana Fuji", unit: "1 kilo", price: 2111, image: "/images/manzanaFuji.png", quantity: 1 },
   { id: "naranjas", name: "Naranjas", unit: "1 kilo", price: 1500, image: "/images/naranjas.png", quantity: 1, badge: "Temporada" },
-  { id: "huevo-primera-color-caja-30", name: "Huevo Primera Color", unit: "caja de 30 unidades", price: 10056, image: "/images/huevosColor.png", quantity: 1 },
+  { id: "huevo-primera-color-caja-30", name: "Huevo Primera Color", unit: "caja de 30 unidades", price: 8333, image: "/images/huevosColor.png", quantity: 1 },
   { id: "tomate-larga-vida", name: "Tomate Larga Vida", unit: "1 kilo", price: 1667, image: "/images/tomate.png", quantity: 1 },
 ];
 

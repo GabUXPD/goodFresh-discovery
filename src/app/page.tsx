@@ -15,7 +15,7 @@ import { catalog } from "@/data/catalog";
 const boxes: Box[] = [
   { name: "Caja esencial ensaladas", image: "/images/cajaVerduras.png", price: "$10.722", itemCount: "5 tipos de productos", cashback: "$550", href: "/caja-ensaladas" },
   { name: "Caja esencial frutas", image: "/images/cajaFrutas.png", price: "$6.945", itemCount: "4 tipos de productos", cashback: "$550", href: "/caja-frutas" },
-  { name: "Caja esencial completa", image: "/images/cajaCompleta.png", price: "$33.613", itemCount: "17 tipos de productos", cashback: "$1.750", href: "/caja-completa" },
+  { name: "Caja esencial completa", image: "/images/cajaCompleta.png", price: "$31.890", itemCount: "17 tipos de productos", cashback: "$1.750", href: "/caja-completa" },
 ];
 
 // Cashback verificado en Figma para estos 4 productos; el resto usa el
