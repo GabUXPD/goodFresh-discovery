@@ -9,10 +9,20 @@ import { SAVED_ADDRESSES } from "@/data/addresses";
 // Contenido y estructura verificados contra el nodo de Figma "Resumen de compra"
 // (node-id 526-7146, archivo "Nuevos negocios").
 
-const SHIPPING_COST = 2990;
+const SHIPPING_COST = 2400;
 const SERVICE_FEE = 140;
 const DISCOUNT = 0;
+const FREE_SHIPPING_THRESHOLD = 40000;
 const REDIRECT_DELAY_MS = 3000;
+
+// Nombre de caja para mostrar en "Productos comprados"; si la compra no viene
+// de una caja (productos elegidos uno a uno), se muestra la cantidad de
+// productos seleccionados en vez de un nombre de caja.
+const BOX_NAMES: Record<string, string> = {
+  "caja-ensaladas": "Caja esencial ensaladas",
+  "caja-frutas": "Caja esencial frutas",
+  "caja-completa": "Caja esencial completa",
+};
 
 function formatPrice(value: number) {
   return `$${new Intl.NumberFormat("es-CL").format(value)}`;
@@ -21,7 +31,12 @@ function formatPrice(value: number) {
 export default function ResumenCompraPage() {
   const cart = useCart();
   const router = useRouter();
-  const total = cart.total + SHIPPING_COST + SERVICE_FEE - DISCOUNT;
+  const hasFreeShipping = cart.total >= FREE_SHIPPING_THRESHOLD;
+  const shippingCost = hasFreeShipping ? 0 : SHIPPING_COST;
+  const total = cart.total + shippingCost + SERVICE_FEE - DISCOUNT;
+  const boxName = cart.activeBoxId ? BOX_NAMES[cart.activeBoxId] : null;
+  const productLabel = boxName ?? "Productos seleccionados";
+  const productQuantity = boxName ? 1 : cart.items.length;
   const selectedAddress =
     SAVED_ADDRESSES.find((a) => a.id === cart.selectedAddressId) ?? SAVED_ADDRESSES[0];
 
@@ -60,13 +75,15 @@ export default function ResumenCompraPage() {
 
         <div className="flex items-center justify-between">
           <span className="text-base font-bold text-ink-9">Productos comprados</span>
-          <span className="text-xs font-medium text-neutro-8">1 producto</span>
+          <span className="text-xs font-medium text-neutro-8">
+            {productQuantity} {productQuantity === 1 ? "producto" : "productos"}
+          </span>
         </div>
 
         <div className="flex items-center gap-2 py-2">
           <CheckIcon className="h-6 w-6 shrink-0 text-brand" />
-          <span className="w-[26px] text-center text-sm text-ink-9">1</span>
-          <span className="flex-1 text-sm text-ink-9">Caja ensalada</span>
+          <span className="w-[26px] text-center text-sm text-ink-9">{productQuantity}</span>
+          <span className="flex-1 text-sm text-ink-9">{productLabel}</span>
           <span className="text-sm text-ink-9">{formatPrice(total)}</span>
         </div>
 

@@ -22,8 +22,21 @@ type SuggestedItem = {
   image: string;
 };
 
+// Opciones de madurez por producto; si un producto no tiene entrada acá, usa
+// las opciones por defecto ("Para hoy" / "2 - 3 días").
+const RIPENESS_OPTIONS: Record<string, readonly NonNullable<IncludedItem["ripeness"]>[]> = {
+  platano: ["Más verdes", "Más amarillos"],
+};
+const DEFAULT_RIPENESS_OPTIONS: readonly NonNullable<IncludedItem["ripeness"]>[] = ["Para hoy", "2 - 3 días"];
+
+// Productos que, al agregarlos desde el buscador, deben mostrarse con el
+// mismo diseño (pill + botones de Madurez) que "Palta Hass Chilena".
+const SEARCH_ADD_EXTRAS: Record<string, Partial<IncludedItem>> = {
+  "palta-hass-peruana": { badge: "Temporada", ripeness: "Para hoy" },
+};
+
 const initialIncluded: IncludedItem[] = [
-  { id: "platano", name: "Plátano", unit: "1 kilo", price: 1556, image: "/images/platano.png", quantity: 1 },
+  { id: "platano", name: "Plátano", unit: "1 kilo", price: 1556, image: "/images/platano.png", quantity: 1, ripeness: "Más verdes" },
   { id: "naranjas", name: "Naranjas", unit: "1 kilo", price: 1500, image: "/images/naranjas.png", quantity: 1 },
   { id: "frutillas", name: "Frutillas", unit: "500 gr.", price: 1778, image: "/images/frutillas.png", quantity: 1 },
   { id: "manzana-fuji", name: "Manzana Fuji", unit: "1 kilo", price: 2111, image: "/images/manzanaFuji.png", quantity: 1 },
@@ -83,7 +96,7 @@ export default function CajaFrutasPage() {
   }
 
   function addFromSearch(product: CatalogProduct) {
-    setIncluded((items) => [...items, { ...product, quantity: 1 }]);
+    setIncluded((items) => [...items, { ...product, quantity: 1, ...SEARCH_ADD_EXTRAS[product.id] }]);
     setSuggested((items) => items.filter((i) => i.id !== product.id));
     setQuery("");
   }
@@ -185,7 +198,7 @@ export default function CajaFrutasPage() {
             {item.ripeness && (
               <div className="flex items-center justify-end gap-1">
                 <span className="text-[10px] text-[#5d6673]">Madurez:</span>
-                {(["Para hoy", "2 - 3 días"] as const).map((option) => (
+                {(RIPENESS_OPTIONS[item.id] ?? DEFAULT_RIPENESS_OPTIONS).map((option) => (
                   <button
                     key={option}
                     type="button"

@@ -10,7 +10,7 @@ export type CartItem = {
   image: string;
   quantity: number;
   badge?: string;
-  ripeness?: "Para hoy" | "2 - 3 días";
+  ripeness?: "Para hoy" | "2 - 3 días" | "Más verdes" | "Más amarillos";
 };
 
 type CartContextValue = {

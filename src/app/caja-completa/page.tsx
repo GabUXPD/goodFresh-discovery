@@ -23,6 +23,19 @@ type SuggestedItem = {
   image: string;
 };
 
+// Opciones de madurez por producto; si un producto no tiene entrada acá, usa
+// las opciones por defecto ("Para hoy" / "2 - 3 días").
+const RIPENESS_OPTIONS: Record<string, readonly NonNullable<IncludedItem["ripeness"]>[]> = {
+  platano: ["Más verdes", "Más amarillos"],
+};
+const DEFAULT_RIPENESS_OPTIONS: readonly NonNullable<IncludedItem["ripeness"]>[] = ["Para hoy", "2 - 3 días"];
+
+// Productos que, al agregarlos desde el buscador, deben mostrarse con el
+// mismo diseño (pill + botones de Madurez) que "Palta Hass Chilena".
+const SEARCH_ADD_EXTRAS: Record<string, Partial<IncludedItem>> = {
+  "palta-hass-peruana": { badge: "Temporada", ripeness: "Para hoy" },
+};
+
 const initialIncluded: IncludedItem[] = [
   { id: "cebolla", name: "Cebolla", unit: "1 unidad", price: 278, image: "/images/cebolla.png", quantity: 3 },
   { id: "brocoli", name: "Brócoli", unit: "1 unidad", price: 1556, image: "/images/brocoli.png", quantity: 1 },
@@ -36,7 +49,7 @@ const initialIncluded: IncludedItem[] = [
   { id: "zapallo-camote", name: "Zapallo Camote", unit: "1 corte", price: 1111, image: "/images/zapallo.png", quantity: 1 },
   { id: "ajo", name: "Ajo", unit: "1 unidad", price: 222, image: "/images/ajo.png", quantity: 1 },
   { id: "cilantro", name: "Cilantro", unit: "1 paquete", price: 722, image: "/images/cilantro.png", quantity: 1 },
-  { id: "platano", name: "Plátano", unit: "1 kilo", price: 1556, image: "/images/platano.png", quantity: 1 },
+  { id: "platano", name: "Plátano", unit: "1 kilo", price: 1556, image: "/images/platano.png", quantity: 1, ripeness: "Más verdes" },
   { id: "manzana-fuji", name: "Manzana Fuji", unit: "1 kilo", price: 2111, image: "/images/manzanaFuji.png", quantity: 1 },
   { id: "naranjas", name: "Naranjas", unit: "1 kilo", price: 1500, image: "/images/naranjas.png", quantity: 1, badge: "Temporada" },
   { id: "huevo-primera-color-caja-30", name: "Huevo Primera Color", unit: "caja de 30 unidades", price: 8333, image: "/images/huevosColor.png", quantity: 1 },
@@ -96,7 +109,7 @@ export default function CajaCompletaPage() {
   }
 
   function addFromSearch(product: CatalogProduct) {
-    setIncluded((items) => [...items, { ...product, quantity: 1 }]);
+    setIncluded((items) => [...items, { ...product, quantity: 1, ...SEARCH_ADD_EXTRAS[product.id] }]);
     setSuggested((items) => items.filter((i) => i.id !== product.id));
     setQuery("");
   }
@@ -198,7 +211,7 @@ export default function CajaCompletaPage() {
             {item.ripeness && (
               <div className="flex items-center justify-end gap-1">
                 <span className="text-[10px] text-[#5d6673]">Madurez:</span>
-                {(["Para hoy", "2 - 3 días"] as const).map((option) => (
+                {(RIPENESS_OPTIONS[item.id] ?? DEFAULT_RIPENESS_OPTIONS).map((option) => (
                   <button
                     key={option}
                     type="button"

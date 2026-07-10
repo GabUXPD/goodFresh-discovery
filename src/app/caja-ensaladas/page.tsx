@@ -23,10 +23,16 @@ type SuggestedItem = {
   image: string;
 };
 
+// Productos que, al agregarlos desde el buscador, deben mostrarse con el
+// mismo diseño (pill + botones de Madurez) que "Palta hass".
+const SEARCH_ADD_EXTRAS: Record<string, Partial<IncludedItem>> = {
+  "palta-hass-peruana": { badge: "Temporada", ripeness: "Para hoy" },
+};
+
 const initialIncluded: IncludedItem[] = [
   { id: "lechuga", name: "Lechuga costina", unit: "1 unidad", price: 1111, image: "/images/lechuga.png", quantity: 1 },
   { id: "pepino", name: "Pepino", unit: "1 unidad", price: 722, image: "/images/pepino.png", quantity: 1 },
-  { id: "palta", name: "Palta hass", unit: "1 kilo", price: 6444, image: "/images/palta.png", quantity: 1, badge: "Temporada", ripeness: "Para hoy" },
+  { id: "palta-hass-chilena", name: "Palta Hass Chilena", unit: "1 kilo", price: 6444, image: "/images/palta.png", quantity: 1, badge: "Temporada", ripeness: "Para hoy" },
   { id: "tomate", name: "Tomates", unit: "1 kilo", price: 1667, image: "/images/tomate.png", quantity: 1 },
   { id: "limon", name: "Limón", unit: "1 kilo", price: 778, image: "/images/limon.png", quantity: 1 },
 ];
@@ -85,7 +91,7 @@ export default function CajaEnsaladasPage() {
   }
 
   function addFromSearch(product: CatalogProduct) {
-    setIncluded((items) => [...items, { ...product, quantity: 1 }]);
+    setIncluded((items) => [...items, { ...product, quantity: 1, ...SEARCH_ADD_EXTRAS[product.id] }]);
     setSuggested((items) => items.filter((i) => i.id !== product.id));
     setQuery("");
   }
