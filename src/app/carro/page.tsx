@@ -67,7 +67,7 @@ export default function CarroPage() {
       </div>
 
       {/* Productos del carro */}
-      <div className="flex flex-col gap-3 px-4 pt-4 pb-[30px]">
+      <div className="flex flex-col gap-3 px-4 pt-4">
         {cart.items.length === 0 && <p className="text-center text-xs text-neutro-8">Tu carro está vacío.</p>}
         {cart.items.map((item) => (
           <div key={item.id} className="flex items-center justify-between rounded-2xl bg-white p-3 shadow-[0px_4px_12px_0px_rgba(6,31,45,0.12)]">
