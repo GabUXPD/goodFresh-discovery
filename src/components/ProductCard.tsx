@@ -22,10 +22,11 @@ export function ProductCard({ product }: { product: Product }) {
   const quantity = cart.items.find((item) => item.id === product.id)?.quantity ?? 0;
 
   function handleAdd() {
-    cart.setItems((items) => [
-      ...items,
-      { id: product.id, name: product.name, unit: product.unit, price: product.price, image: product.image, quantity: 1 },
-    ]);
+    cart.setItems((items) =>
+      items.some((item) => item.id === product.id)
+        ? items
+        : [...items, { id: product.id, name: product.name, unit: product.unit, price: product.price, image: product.image, quantity: 1 }]
+    );
   }
 
   function handleDecrease() {

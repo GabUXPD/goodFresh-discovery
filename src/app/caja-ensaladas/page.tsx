@@ -86,12 +86,14 @@ export default function CajaEnsaladasPage() {
   }
 
   function addSuggested(item: SuggestedItem) {
-    setIncluded((items) => [...items, { ...item, quantity: 1 }]);
+    setIncluded((items) => (items.some((i) => i.id === item.id) ? items : [...items, { ...item, quantity: 1 }]));
     setSuggested((items) => items.filter((i) => i.id !== item.id));
   }
 
   function addFromSearch(product: CatalogProduct) {
-    setIncluded((items) => [...items, { ...product, quantity: 1, ...SEARCH_ADD_EXTRAS[product.id] }]);
+    setIncluded((items) =>
+      items.some((i) => i.id === product.id) ? items : [...items, { ...product, quantity: 1, ...SEARCH_ADD_EXTRAS[product.id] }]
+    );
     setSuggested((items) => items.filter((i) => i.id !== product.id));
     setQuery("");
   }

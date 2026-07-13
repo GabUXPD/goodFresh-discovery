@@ -67,7 +67,7 @@ export default function CarroPage() {
       </div>
 
       {/* Productos del carro */}
-      <div className="flex flex-col gap-3 px-4 pt-4">
+      <div className={`flex flex-col gap-3 px-4 pt-4 ${cart.isRepeatOrder ? "" : "pb-[10px]"}`}>
         {cart.items.length === 0 && <p className="text-center text-xs text-neutro-8">Tu carro está vacío.</p>}
         {cart.items.map((item) => (
           <div key={item.id} className="flex items-center justify-between rounded-2xl bg-white p-3 shadow-[0px_4px_12px_0px_rgba(6,31,45,0.12)]">
@@ -114,7 +114,7 @@ export default function CarroPage() {
 
       {/* Link "Agregar productos" al repetir un pedido anterior */}
       {cart.isRepeatOrder && !isBelowMinimum && cart.items.length > 0 && (
-        <div className="flex justify-center px-4 pt-2">
+        <div className="flex justify-center px-4 pt-2 pb-[30px]">
           <Link
             href={boxHref}
             className="mt-2 flex w-full items-center justify-center rounded-full border border-brand bg-white px-3 py-[11px] text-[14px] leading-[1.5] font-medium whitespace-nowrap text-brand shadow-sm"
