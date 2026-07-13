@@ -184,8 +184,13 @@ export default function CarroPage() {
         ) : (
           <button
             type="button"
+            disabled={cart.items.length === 0}
             onClick={() => router.push("/confirmacion-compra")}
-            className="flex w-full items-center justify-center rounded-full bg-brand px-6 py-4 text-sm font-bold text-brand-1 shadow-sm"
+            className={
+              cart.items.length === 0
+                ? "flex w-full items-center justify-center rounded-full border border-neutro-3 bg-neutro-3 px-6 py-4 text-sm font-bold text-neutro-7"
+                : "flex w-full items-center justify-center rounded-full bg-brand px-6 py-4 text-sm font-bold text-brand-1 shadow-sm"
+            }
           >
             Comprar
           </button>
