@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ShareIcon } from "@/components/icons";
 import { useCart } from "@/context/CartContext";
@@ -56,7 +57,9 @@ export default function CompraExitosaPage() {
           <ShareIcon className="h-6 w-6 text-white" />
           <span className="text-sm font-medium text-white">Recomienda GoodFresh a tus amigos</span>
         </button>
-        <p className="text-sm font-extrabold text-[#232321] underline">Ir a mi orden</p>
+        <Link href="/mi-orden" className="text-sm font-extrabold text-[#232321] underline">
+          Ir a mi orden
+        </Link>
         <button
           type="button"
           onClick={handleSeguirComprando}
