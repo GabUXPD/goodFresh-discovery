@@ -35,13 +35,13 @@ export function ProductGrid({ products }: { products: Product[] }) {
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex w-full items-center gap-1 rounded-full border border-neutro-4 bg-white py-0.5 pr-2 pl-3">
+      <div className="flex w-full items-center gap-1 rounded-full border border-neutro-8 bg-white px-4 py-2">
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Buscar producto"
-          className="flex-1 bg-transparent text-xs text-ink-9 placeholder:text-neutro-8 focus:outline-none"
+          className="flex-1 bg-transparent text-[14px] text-ink-9 placeholder:text-neutro-9 focus:outline-none"
         />
         {isSearching ? (
           <button
@@ -50,11 +50,11 @@ export function ProductGrid({ products }: { products: Product[] }) {
             onClick={() => setQuery("")}
             className="flex items-center justify-center rounded-full p-1"
           >
-            <CloseIcon className="h-3 w-3 text-neutro-8" />
+            <CloseIcon className="h-3 w-3 text-neutro-9" />
           </button>
         ) : (
           <div className="flex items-center justify-center rounded-full p-1">
-            <SearchIcon className="h-4 w-4 text-neutro-8" />
+            <SearchIcon className="h-[24px] w-[24px] text-neutro-9" />
           </div>
         )}
       </div>

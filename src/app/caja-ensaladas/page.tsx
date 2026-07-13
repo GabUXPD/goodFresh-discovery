@@ -99,7 +99,11 @@ export default function CajaEnsaladasPage() {
   }
 
   function handleAddToCart() {
-    cart.setItems(included);
+    // Si el carro ya tenía productos de otro origen (sueltos, u otra caja),
+    // se conservan y se suman a los de esta caja en vez de reemplazarlos.
+    const preserved =
+      cart.activeBoxId === "caja-ensaladas" ? [] : cart.items.filter((item) => !included.some((i) => i.id === item.id));
+    cart.setItems([...preserved, ...included]);
     cart.setActiveBoxId("caja-ensaladas");
     cart.setIsRepeatOrder(false);
     router.push("/carro");
@@ -216,13 +220,13 @@ export default function CajaEnsaladasPage() {
       {/* Buscador */}
       <div className="flex flex-col gap-2 px-4 pt-1 pb-2">
         <p className="text-center text-[14px] text-ink-9">¿Quieres agregar algo más?</p>
-        <div className="flex w-full items-center gap-1 rounded-full bg-neutro-3 py-0.5 pr-2 pl-3">
+        <div className="flex w-full items-center gap-1 rounded-full border border-neutro-8 bg-white px-4 py-1">
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Buscar producto"
-            className="flex-1 bg-transparent text-[14px] text-ink-9 placeholder:text-neutro-8 focus:outline-none"
+            className="flex-1 bg-transparent text-[14px] text-ink-9 placeholder:text-neutro-9 focus:outline-none"
           />
           {query.trim().length > 0 ? (
             <button
@@ -231,11 +235,11 @@ export default function CajaEnsaladasPage() {
               onClick={() => setQuery("")}
               className="flex items-center justify-center rounded-full p-1"
             >
-              <CloseIcon className="h-3 w-3 text-neutro-8" />
+              <CloseIcon className="h-3 w-3 text-neutro-9" />
             </button>
           ) : (
             <div className="flex items-center justify-center rounded-full p-1">
-              <SearchIcon className="h-4 w-4 text-neutro-8" />
+              <SearchIcon className="h-[15px] w-[15px] text-neutro-9" />
             </div>
           )}
         </div>
