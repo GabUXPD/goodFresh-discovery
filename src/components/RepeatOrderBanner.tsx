@@ -30,9 +30,9 @@ export function RepeatOrderBanner() {
           <Image src="/images/cajaVerduras.png" alt="" width={486} height={389} className="h-[39px] w-auto" />
         </div>
         <div className="flex flex-col items-start">
-          <p className="text-[16px] font-bold text-ink-9">Ahorra tiempo</p>
+          <p className="text-[16px] font-bold text-ink-9">Repite tu compra</p>
           <p className="text-[14px] text-ink-9" style={{ lineHeight: 1.7 }}>
-            Repite tu compra
+            Ahorra tiempo
           </p>
         </div>
       </div>
