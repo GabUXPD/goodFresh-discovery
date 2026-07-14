@@ -322,6 +322,17 @@ export function FavoriteBadgeIcon({ className }: IconProps) {
   );
 }
 
+export function CompareSpinnerIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+      <path
+        d="M13.895 0.648866C13.9199 0.205856 14.3436 -0.105388 14.7651 0.0333583C19.6692 1.64779 23.2097 6.26481 23.2097 11.7094C23.2097 18.4974 17.7067 24.0005 10.9187 24.0005C6.22293 24.0004 2.14612 21.365 0.0772236 17.4941C-0.127909 17.1103 0.0950863 16.6474 0.516533 16.5389C0.84148 16.4553 1.17806 16.6149 1.33838 16.9096C3.18482 20.3044 6.78245 22.6088 10.9187 22.6088C16.9382 22.6088 21.8181 17.729 21.8181 11.7094C21.8181 6.90945 18.7146 2.83666 14.4053 1.38257C14.0914 1.27664 13.8763 0.979675 13.895 0.648866Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
 export function SwirlIcon({ className }: IconProps) {
   return (
     <svg viewBox="0 0 52 53" fill="none" className={className} aria-hidden="true">

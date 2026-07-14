@@ -1,25 +1,26 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ChevronLeftIcon, MinusIcon, PlusIcon, WarningIcon } from "@/components/icons";
+import { ChevronLeftIcon, CompareSpinnerIcon, MinusIcon, PlusIcon, WarningIcon } from "@/components/icons";
 import { useCart } from "@/context/CartContext";
 
 // Contenido y estructura verificados contra el nodo de Figma "Carro de compras"
 // (node-id 501-3948, archivo "Nuevos negocios"). 3 de los 4 bloques de producto
 // de ejemplo del diseño estaban ocultos (son de otra app, no de GoodFresh) y no
 // se incluyen. El carro real refleja lo que el usuario armó en "Caja ensalada".
-// El aviso de monto mínimo sigue el node-id 505-5884.
-
+// El aviso de monto mínimo sigue el node-id 505-5884. El banner comparativo de
+// supermercados (carga: node-id 839-4434, resultado: node-id 839-4396) estima
+// el precio de Jumbo con un 25% de recargo y el de Líder/Walmart con un 20%,
+// y el % de ahorro se calcula contra el precio más alto de los dos.
 const CART_PINK = "#ff18a6";
 const MIN_TOTAL = 12000;
 const FREE_SHIPPING_THRESHOLD = 40000;
-// Estimación de lo que costaría la misma compra en supermercados, calculada
-// como un recargo sobre el total real (proporción tomada del ejemplo de
-// Figma: $24.200 y $23.400 sobre un total de $19.100).
-const LIDER_MARKUP = 0.27;
-const JUMBO_MARKUP = 0.22;
+const JUMBO_MARKUP = 0.3;
+const LIDER_MARKUP = 0.24;
+const COMPARISON_LOADING_MS = 2500;
 
 function formatPrice(value: number) {
   return `$${new Intl.NumberFormat("es-CL").format(value)}`;
@@ -30,11 +31,22 @@ export default function CarroPage() {
   const router = useRouter();
   const isBelowMinimum = cart.items.length > 0 && cart.total < MIN_TOTAL;
   const hasFreeShipping = cart.total >= FREE_SHIPPING_THRESHOLD;
+  const [isComparing, setIsComparing] = useState(true);
   // Si el carro tiene una caja activa (el usuario armó "Caja ensalada", "Caja
   // frutas" o "Caja completa"), se vuelve a esa misma caja. Si los productos
   // vienen solo de "O elige producto a producto" en la tienda (sin caja
   // activa), se vuelve a esa sección en vez de abrir/rearmar una caja.
   const boxHref = cart.activeBoxId ? `/${cart.activeBoxId}` : "/#producto-a-producto";
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsComparing(false), COMPARISON_LOADING_MS);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const jumboPrice = Math.round(cart.total * (1 + JUMBO_MARKUP));
+  const liderPrice = Math.round(cart.total * (1 + LIDER_MARKUP));
+  const higherPrice = Math.max(jumboPrice, liderPrice);
+  const savingsPercent = higherPrice > 0 ? Math.round((1 - cart.total / higherPrice) * 100) : 0;
 
   function handleMinus(id: string, quantity: number) {
     if (quantity <= 1) {
@@ -132,22 +144,40 @@ export default function CarroPage() {
 
       {/* Barra inferior */}
       <div className="fixed inset-x-0 bottom-0 z-10 mx-auto flex w-full max-w-[430px] flex-col gap-4 border-t-8 border-[#f5f5f7] bg-white px-4 pt-4 pb-3">
-        {cart.items.length > 0 && !isBelowMinimum && (
-          <div className="flex items-center justify-between gap-2 rounded-lg bg-aqua-3 p-2">
-            <div className="flex flex-col">
-              <p className="text-[14px] font-bold text-[#2d333b]">Este mismo carro en supermercados</p>
-              <p className="text-[10px] text-[#3c444f]">Precios verificados hoy en línea</p>
+        {cart.items.length > 0 &&
+          !isBelowMinimum &&
+          (isComparing ? (
+            <div className="flex flex-col items-center gap-1 rounded-lg bg-[#feedb8] p-2">
+              <CompareSpinnerIcon className="h-6 w-6 animate-spin text-[#d57911]" />
+              <p className="text-[14px] font-semibold whitespace-nowrap text-[#d57911]">Comparando precios en supermercados</p>
             </div>
-            <div className="flex shrink-0 items-center gap-1">
-              <span className="rounded-full bg-[#429446] px-1.5 py-0.5 text-[12px] font-semibold whitespace-nowrap text-white">
-                {formatPrice(Math.round(cart.total * (1 + LIDER_MARKUP)))}
-              </span>
-              <span className="rounded-full bg-[#2f59d3] px-1.5 py-0.5 text-[12px] font-semibold whitespace-nowrap text-white">
-                {formatPrice(Math.round(cart.total * (1 + JUMBO_MARKUP)))}
-              </span>
+          ) : (
+            <div className="flex flex-col gap-1.5 rounded-lg bg-[#fff9e8] p-2">
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-[13px] font-bold text-[#2d333b]">Este mismo carro en supermercados</p>
+                <div className="flex shrink-0 items-center gap-1">
+                  <span className="flex items-center gap-1 rounded-full bg-[#009639] py-px pr-1 pl-0.5 text-[12px] font-semibold whitespace-nowrap text-white">
+                    <span className="relative h-5 w-5 shrink-0 overflow-hidden rounded-full">
+                      <Image src="/images/logo-jumbo.png" alt="" fill sizes="20px" className="object-cover" />
+                    </span>
+                    {formatPrice(jumboPrice)}
+                  </span>
+                  <span className="flex items-center gap-1 rounded-full bg-[#0071dc] py-px pr-1 pl-0.5 text-[12px] font-semibold whitespace-nowrap text-white">
+                    <span className="relative h-5 w-5 shrink-0 overflow-hidden rounded-full">
+                      <Image src="/images/logo-walmart.png" alt="" fill sizes="20px" className="object-cover" />
+                    </span>
+                    {formatPrice(liderPrice)}
+                  </span>
+                </div>
+              </div>
+              <div className="flex items-end justify-between gap-2">
+                <p className="text-[12px] font-semibold whitespace-nowrap text-[#3c444f]">
+                  En GoodFresh te ahorras un <span className="text-[14px]">{savingsPercent}%</span>
+                </p>
+                <p className="text-[10px] whitespace-nowrap text-[#3c444f]">Precios verificados hoy en línea</p>
+              </div>
             </div>
-          </div>
-        )}
+          ))}
         {isBelowMinimum && (
           <div className="flex items-start gap-1 rounded-lg bg-[#fff9e8] py-2 pr-2 pl-1">
             <WarningIcon className="h-6 w-6 shrink-0 text-[#c36800]" />
