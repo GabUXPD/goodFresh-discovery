@@ -154,7 +154,7 @@ export default function CarroPage() {
           ) : (
             <div className="flex flex-col gap-1.5 rounded-lg bg-[#fff9e8] p-2">
               <div className="flex items-center justify-between gap-2">
-                <p className="text-[13px] font-bold text-[#2d333b]">Este mismo carro en supermercados</p>
+                <p className="text-[12px] font-bold text-[#2d333b]">Este mismo carro en supermercados</p>
                 <div className="flex shrink-0 items-center gap-1">
                   <span className="flex items-center gap-1 rounded-full bg-[#009639] py-px pr-1 pl-0.5 text-[12px] font-semibold whitespace-nowrap text-white">
                     <span className="relative h-5 w-5 shrink-0 overflow-hidden rounded-full">
