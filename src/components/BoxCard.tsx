@@ -40,7 +40,7 @@ export function BoxCard({ box }: { box: Box }) {
     </>
   );
 
-  const cardClassName = "w-[243px] shrink-0 overflow-hidden rounded-card bg-white pb-3 shadow-sm";
+  const cardClassName = "tap-scale w-[243px] shrink-0 overflow-hidden rounded-card bg-white pb-3 shadow-sm";
 
   return box.href ? (
     <Link href={box.href} className={cardClassName}>

@@ -88,3 +88,49 @@
 body {
   color: var(--color-ink-9);
 }
+
+/* Retroalimentación táctil: al pulsar escala a 0.97, al soltar vuelve a 1.0. */
+@layer utilities {
+  .tap-scale {
+    transition: transform 100ms cubic-bezier(0.2, 0.9, 0.3, 1);
+  }
+  .tap-scale:active {
+    transform: scale(0.97);
+  }
+
+  /* Transición de pantalla al navegar (ver PageTransition.tsx). */
+  @keyframes page-slide-in-right {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  @keyframes page-slide-out-right {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(100%);
+    }
+  }
+
+  /* Modal de direcciones en confirmación de compra. */
+  @keyframes sheet-slide-up {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+  @keyframes sheet-slide-down {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(100%);
+    }
+  }
+}

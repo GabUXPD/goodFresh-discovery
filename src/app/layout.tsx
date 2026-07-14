@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Outfit } from "next/font/google";
 import { CartProvider } from "@/context/CartContext";
+import { PageTransition } from "@/components/PageTransition";
 import "./globals.css";
 
 // Axiforma (the real GoodMeal design system font) isn't licensed for web use yet.
@@ -33,7 +34,9 @@ export default function RootLayout({
     <html lang="es" className={`${axiforma.variable} h-full antialiased`}>
       <body className="min-h-full bg-neutro-4">
         <div className="mx-auto flex min-h-dvh w-full max-w-[430px] flex-col bg-white">
-          <CartProvider>{children}</CartProvider>
+          <CartProvider>
+            <PageTransition>{children}</PageTransition>
+          </CartProvider>
         </div>
       </body>
     </html>

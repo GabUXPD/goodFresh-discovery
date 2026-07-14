@@ -35,7 +35,7 @@ export function ProductGrid({ products }: { products: Product[] }) {
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex w-full items-center gap-1 rounded-full border border-neutro-8 bg-white px-4 py-2">
+      <div className="tap-scale flex w-full items-center gap-1 rounded-full border border-neutro-8 bg-white px-4 py-2">
         <input
           type="text"
           value={query}

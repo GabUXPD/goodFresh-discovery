@@ -34,6 +34,7 @@ const DEFAULT_RIPENESS_OPTIONS: readonly NonNullable<IncludedItem["ripeness"]>[]
 // mismo diseño (pill + botones de Madurez) que "Palta Hass Chilena".
 const SEARCH_ADD_EXTRAS: Record<string, Partial<IncludedItem>> = {
   "palta-hass-peruana": { badge: "Temporada", ripeness: "Para hoy" },
+  "palta-hass-chilena": { badge: "Temporada", ripeness: "Para hoy" },
 };
 
 const initialIncluded: IncludedItem[] = [
@@ -238,7 +239,7 @@ export default function CajaCompletaPage() {
       {/* Buscador */}
       <div className="flex flex-col gap-2 px-4 pt-1 pb-2">
         <p className="text-center text-[14px] text-ink-9">¿Quieres agregar algo más?</p>
-        <div className="flex w-full items-center gap-1 rounded-full border border-neutro-8 bg-white px-4 py-1">
+        <div className="tap-scale flex w-full items-center gap-1 rounded-full border border-neutro-8 bg-white px-4 py-1">
           <input
             type="text"
             value={query}
@@ -335,14 +336,14 @@ export default function CajaCompletaPage() {
         <div className="flex items-center gap-4">
           <Link
             href="/"
-            className="flex flex-1 items-center justify-center rounded-full border border-brand px-5 py-3 text-[14px] leading-[1.5] font-medium text-brand"
+            className="tap-scale flex flex-1 items-center justify-center rounded-full border border-brand px-5 py-3 text-[14px] leading-[1.5] font-medium text-brand"
           >
             Seguir comprando
           </Link>
           <button
             type="button"
             onClick={handleAddToCart}
-            className="flex flex-1 items-center justify-center rounded-full bg-brand px-5 py-3 text-sm font-medium text-brand-1 shadow-sm"
+            className="tap-scale flex flex-1 items-center justify-center rounded-full bg-brand px-5 py-3 text-sm font-medium text-brand-1 shadow-sm"
           >
             Agregar al carrito
           </button>

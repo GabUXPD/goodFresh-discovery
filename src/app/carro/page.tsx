@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChevronLeftIcon, CompareSpinnerIcon, MinusIcon, PlusIcon, WarningIcon } from "@/components/icons";
-import { useCart } from "@/context/CartContext";
+import { RIPENESS_OPTIONS, useCart, type CartItem } from "@/context/CartContext";
 
 // Contenido y estructura verificados contra el nodo de Figma "Carro de compras"
 // (node-id 501-3948, archivo "Nuevos negocios"). 3 de los 4 bloques de producto
@@ -56,6 +56,10 @@ export default function CarroPage() {
     }
   }
 
+  function setItemRipeness(id: string, ripeness: NonNullable<CartItem["ripeness"]>) {
+    cart.setItems((items) => items.map((item) => (item.id === id ? { ...item, ripeness } : item)));
+  }
+
   return (
     <main className="flex flex-1 flex-col">
       {/* Header */}
@@ -81,47 +85,69 @@ export default function CarroPage() {
       {/* Productos del carro */}
       <div className={`flex flex-col gap-3 px-4 pt-4 ${cart.isRepeatOrder ? "" : "pb-[24px]"}`}>
         {cart.items.length === 0 && <p className="text-center text-xs text-neutro-8">Tu carro está vacío.</p>}
-        {cart.items.map((item) => (
-          <div key={item.id} className="flex items-center justify-between rounded-2xl bg-white p-3 shadow-[0px_4px_12px_0px_rgba(6,31,45,0.12)]">
-            <div className="flex items-center gap-2">
-              <div className="relative h-[42px] w-14 shrink-0 overflow-hidden rounded">
-                <Image src={item.image} alt={item.name} fill sizes="56px" className="object-cover" />
+        {cart.items.map((item) => {
+          const ripenessOptions = item.ripeness ? RIPENESS_OPTIONS[item.id] : undefined;
+          return (
+            <div key={item.id} className="flex flex-col gap-2 rounded-2xl bg-white p-3 shadow-[0px_4px_12px_0px_rgba(6,31,45,0.12)]">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="relative h-[42px] w-14 shrink-0 overflow-hidden rounded">
+                    <Image src={item.image} alt={item.name} fill sizes="56px" className="object-cover" />
+                  </div>
+                  <div className="flex flex-col">
+                    <p className="text-xs text-black">{item.name}</p>
+                    <p className="text-xs font-bold text-black">{item.unit.replace("1 unidad", "1 un")}</p>
+                  </div>
+                </div>
+                <div className="flex flex-col items-end gap-2">
+                  <p className="text-sm font-semibold" style={{ color: CART_PINK }}>
+                    {formatPrice(item.price * item.quantity)}
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      aria-label="Restar"
+                      onClick={() => handleMinus(item.id, item.quantity)}
+                      className="flex h-6 w-6 items-center justify-center rounded-full border"
+                      style={{ borderColor: CART_PINK, color: CART_PINK }}
+                    >
+                      <MinusIcon className="h-3.5 w-3.5" />
+                    </button>
+                    <span className="w-3 text-center text-xs font-semibold" style={{ color: CART_PINK }}>
+                      {item.quantity}
+                    </span>
+                    <button
+                      type="button"
+                      aria-label="Sumar"
+                      onClick={() => cart.updateQuantity(item.id, 1)}
+                      className="flex h-6 w-6 items-center justify-center rounded-full text-white"
+                      style={{ backgroundColor: CART_PINK }}
+                    >
+                      <PlusIcon className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+                </div>
               </div>
-              <div className="flex flex-col">
-                <p className="text-xs text-black">{item.name}</p>
-                <p className="text-xs font-bold text-black">{item.unit.replace("1 unidad", "1 un")}</p>
-              </div>
+              {ripenessOptions && (
+                <div className="flex items-center justify-end gap-1">
+                  <p className="text-center text-[10px] whitespace-nowrap text-[#5d6673]">Madurez:</p>
+                  {ripenessOptions.map((option) => (
+                    <button
+                      key={option}
+                      type="button"
+                      onClick={() => setItemRipeness(item.id, option)}
+                      className={`tap-scale flex items-center justify-center rounded-full border px-3 py-1 text-[10px] whitespace-nowrap ${
+                        item.ripeness === option ? "border-brand text-brand" : "border-[#c4c4c4] text-[#5d6673]"
+                      }`}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
-            <div className="flex flex-col items-end gap-2">
-              <p className="text-sm font-semibold" style={{ color: CART_PINK }}>
-                {formatPrice(item.price * item.quantity)}
-              </p>
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  aria-label="Restar"
-                  onClick={() => handleMinus(item.id, item.quantity)}
-                  className="flex h-6 w-6 items-center justify-center rounded-full border"
-                  style={{ borderColor: CART_PINK, color: CART_PINK }}
-                >
-                  <MinusIcon className="h-3.5 w-3.5" />
-                </button>
-                <span className="w-3 text-center text-xs font-semibold" style={{ color: CART_PINK }}>
-                  {item.quantity}
-                </span>
-                <button
-                  type="button"
-                  aria-label="Sumar"
-                  onClick={() => cart.updateQuantity(item.id, 1)}
-                  className="flex h-6 w-6 items-center justify-center rounded-full text-white"
-                  style={{ backgroundColor: CART_PINK }}
-                >
-                  <PlusIcon className="h-3.5 w-3.5" />
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Link "Agregar productos" al repetir un pedido anterior */}
@@ -129,7 +155,7 @@ export default function CarroPage() {
         <div className="flex justify-center px-4 pt-2 pb-[30px]">
           <Link
             href={boxHref}
-            className="mt-2 flex w-full items-center justify-center rounded-full border border-brand bg-white px-3 py-[11px] text-[14px] leading-[1.5] font-medium whitespace-nowrap text-brand shadow-sm"
+            className="tap-scale mt-2 flex w-full items-center justify-center rounded-full border border-brand bg-white px-3 py-[11px] text-[14px] leading-[1.5] font-medium whitespace-nowrap text-brand shadow-sm"
           >
             Agregar productos
           </Link>
@@ -207,7 +233,7 @@ export default function CarroPage() {
         {isBelowMinimum ? (
           <Link
             href={boxHref}
-            className="flex w-full items-center justify-center rounded-full border border-brand bg-white px-6 py-4 text-[14px] leading-[1.5] font-bold whitespace-nowrap text-brand"
+            className="tap-scale flex w-full items-center justify-center rounded-full border border-brand bg-white px-6 py-4 text-[14px] leading-[1.5] font-bold whitespace-nowrap text-brand"
           >
             Agregar productos
           </Link>
@@ -218,8 +244,8 @@ export default function CarroPage() {
             onClick={() => router.push("/confirmacion-compra")}
             className={
               cart.items.length === 0
-                ? "flex w-full items-center justify-center rounded-full border border-neutro-3 bg-neutro-3 px-6 py-4 text-sm font-bold text-neutro-7"
-                : "flex w-full items-center justify-center rounded-full bg-brand px-6 py-4 text-sm font-bold text-brand-1 shadow-sm"
+                ? "tap-scale flex w-full items-center justify-center rounded-full border border-neutro-3 bg-neutro-3 px-6 py-4 text-sm font-bold text-neutro-7"
+                : "tap-scale flex w-full items-center justify-center rounded-full bg-brand px-6 py-4 text-sm font-bold text-brand-1 shadow-sm"
             }
           >
             Comprar

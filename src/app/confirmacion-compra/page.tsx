@@ -32,6 +32,7 @@ const SERVICE_FEE = 140;
 const DISCOUNT = 0;
 const AVAILABLE_CREDITS = 30000;
 const FREE_SHIPPING_THRESHOLD = 40000;
+const MODAL_TRANSITION_MS = 300;
 
 function formatPrice(value: number) {
   return `$${new Intl.NumberFormat("es-CL").format(value)}`;
@@ -44,8 +45,22 @@ export default function ConfirmacionCompraPage() {
   const [creditsSelected, setCreditsSelected] = useState(false);
   const [coupon, setCoupon] = useState("");
   const [resumenExpanded, setResumenExpanded] = useState(false);
-  const [addressModalOpen, setAddressModalOpen] = useState(false);
+  const [addressModalVisible, setAddressModalVisible] = useState(false);
+  const [addressModalClosing, setAddressModalClosing] = useState(false);
   const { selectedAddressId, setSelectedAddressId } = cart;
+
+  function openAddressModal() {
+    setAddressModalVisible(true);
+    setAddressModalClosing(false);
+  }
+
+  function closeAddressModal() {
+    setAddressModalClosing(true);
+    window.setTimeout(() => {
+      setAddressModalVisible(false);
+      setAddressModalClosing(false);
+    }, MODAL_TRANSITION_MS);
+  }
 
   const selectedAddress = SAVED_ADDRESSES.find((a) => a.id === selectedAddressId) ?? SAVED_ADDRESSES[0];
 
@@ -122,7 +137,7 @@ export default function ConfirmacionCompraPage() {
               <p className="flex-1 text-xs leading-relaxed text-ink-9">{selectedAddress.address}</p>
               <button
                 type="button"
-                onClick={() => setAddressModalOpen(true)}
+                onClick={openAddressModal}
                 className="shrink-0 text-xs font-medium text-brand"
               >
                 Cambiar
@@ -201,6 +216,12 @@ export default function ConfirmacionCompraPage() {
             <span>Cupón de descuento</span>
             <span>-{formatPrice(DISCOUNT)}</span>
           </div>
+          {creditsApplied > 0 && (
+            <div className="flex items-start justify-between text-[#fc6ec1]">
+              <span>GoodMeal Créditos</span>
+              <span>-{formatPrice(AVAILABLE_CREDITS)}</span>
+            </div>
+          )}
           <div className="flex items-start justify-between text-[#9f9fad]">
             <span>Envío</span>
             <span>{formatPrice(shippingCost)}</span>
@@ -224,24 +245,29 @@ export default function ConfirmacionCompraPage() {
         <button
           type="button"
           onClick={() => router.push("/resumen-compra")}
-          className="flex h-16 w-full items-center justify-center rounded-full bg-brand text-base font-semibold text-white shadow-sm"
+          className="tap-scale flex h-16 w-full items-center justify-center rounded-full bg-brand text-base font-semibold text-white shadow-sm"
         >
           Pagar
         </button>
       </div>
 
-      {addressModalOpen && (
+      {addressModalVisible && (
         <div className="fixed inset-0 z-20 mx-auto flex w-full max-w-[430px] items-end">
           <button
             type="button"
             aria-label="Cerrar"
-            onClick={() => setAddressModalOpen(false)}
+            onClick={closeAddressModal}
             className="absolute inset-0 bg-black/40"
           />
-          <div className="relative flex max-h-[90vh] w-full flex-col gap-6 overflow-y-auto rounded-t-3xl bg-white pt-6 pr-6 pb-8 pl-6">
+          <div
+            className="relative flex max-h-[90vh] w-full flex-col gap-6 overflow-y-auto rounded-t-3xl bg-white pt-6 pr-6 pb-8 pl-6"
+            style={{
+              animation: `${addressModalClosing ? "sheet-slide-down" : "sheet-slide-up"} ${MODAL_TRANSITION_MS}ms cubic-bezier(0.2, 0.9, 0.3, 1) forwards`,
+            }}
+          >
             <div className="flex shrink-0 items-start justify-between">
               <h2 className="text-lg font-semibold text-ink-9">Mis direcciones</h2>
-              <button type="button" aria-label="Cerrar" onClick={() => setAddressModalOpen(false)}>
+              <button type="button" aria-label="Cerrar" onClick={closeAddressModal}>
                 <CloseIcon className="h-6 w-6 text-ink-9" />
               </button>
             </div>
@@ -271,7 +297,7 @@ export default function ConfirmacionCompraPage() {
                   type="button"
                   onClick={() => {
                     setSelectedAddressId(addr.id);
-                    setAddressModalOpen(false);
+                    closeAddressModal();
                   }}
                   className={`flex items-center justify-between border-b border-neutro-5 px-6 py-4 ${
                     selectedAddressId === addr.id ? "bg-brand-1" : "bg-white"

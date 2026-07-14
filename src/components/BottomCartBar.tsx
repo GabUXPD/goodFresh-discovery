@@ -23,7 +23,7 @@ export function BottomCartBar() {
           <button
             type="button"
             onClick={() => router.push("/carro")}
-            className="flex h-16 w-full items-center justify-between rounded-full bg-brand px-8 py-5 text-base shadow-sm"
+            className="tap-scale flex h-16 w-full items-center justify-between rounded-full bg-brand px-8 py-5 text-base shadow-sm"
           >
             <span className="font-medium text-brand-1">Ver el carrito ({cart.items.length})</span>
             <span className="font-semibold text-brand-1">{formatPrice(cart.total)}</span>

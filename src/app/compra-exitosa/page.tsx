@@ -52,7 +52,7 @@ export default function CompraExitosaPage() {
       <div className="flex w-full flex-col items-center gap-4">
         <button
           type="button"
-          className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#f6279f] px-4 py-3"
+          className="tap-scale flex w-full items-center justify-center gap-2 rounded-lg bg-[#f6279f] px-4 py-3"
         >
           <ShareIcon className="h-6 w-6 text-white" />
           <span className="text-sm font-medium text-white">Recomienda GoodFresh a tus amigos</span>
@@ -63,7 +63,7 @@ export default function CompraExitosaPage() {
         <button
           type="button"
           onClick={handleSeguirComprando}
-          className="flex w-full items-center justify-center rounded-full border border-brand px-4 py-2.5 text-[16px] leading-[1.5] font-medium text-brand"
+          className="tap-scale flex w-full items-center justify-center rounded-full border border-brand px-4 py-2.5 text-[16px] leading-[1.5] font-medium text-brand"
         >
           Seguir comprando
         </button>

@@ -13,6 +13,16 @@ export type CartItem = {
   ripeness?: "Para hoy" | "2 - 3 días" | "Más verdes" | "Más amarillos";
 };
 
+type Ripeness = NonNullable<CartItem["ripeness"]>;
+
+// Productos que muestran el selector de "Madurez" al agregarlos; el primer
+// valor de cada arreglo se usa como selección por defecto.
+export const RIPENESS_OPTIONS: Record<string, readonly [Ripeness, Ripeness]> = {
+  platano: ["Más verdes", "Más amarillos"],
+  "palta-hass-chilena": ["Para hoy", "2 - 3 días"],
+  "palta-hass-peruana": ["Para hoy", "2 - 3 días"],
+};
+
 type CartContextValue = {
   items: CartItem[];
   setItems: (items: CartItem[] | ((current: CartItem[]) => CartItem[])) => void;

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { MinusIcon, PlusIcon } from "./icons";
-import { useCart, type CartItem } from "@/context/CartContext";
+import { useCart, RIPENESS_OPTIONS, type CartItem } from "@/context/CartContext";
 
 export type Product = {
   id: string;
@@ -14,14 +14,6 @@ export type Product = {
 };
 
 type Ripeness = NonNullable<CartItem["ripeness"]>;
-
-// Productos que muestran el selector de "Madurez" al agregarlos; el primer
-// valor de cada arreglo se usa como selección por defecto.
-const RIPENESS_OPTIONS: Record<string, readonly [Ripeness, Ripeness]> = {
-  platano: ["Más verdes", "Más amarillos"],
-  "palta-hass-chilena": ["Para hoy", "2 - 3 días"],
-  "palta-hass-peruana": ["Para hoy", "2 - 3 días"],
-};
 
 function formatPrice(value: number) {
   return `$${new Intl.NumberFormat("es-CL").format(value)}`;
@@ -132,7 +124,7 @@ export function ProductCard({ product }: { product: Product }) {
           type="button"
           aria-label={`Agregar ${product.name}`}
           onClick={handleAdd}
-          className="absolute top-[3px] right-[3px] flex items-center justify-center rounded-full border border-ink-9 bg-ink-9 p-2 text-white shadow-sm"
+          className="tap-scale absolute top-[3px] right-[3px] flex items-center justify-center rounded-full border border-ink-9 bg-ink-9 p-2 text-white shadow-sm"
         >
           <PlusIcon className="h-3.5 w-3.5" />
         </button>

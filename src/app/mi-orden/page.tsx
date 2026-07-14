@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ChevronLeftIcon } from "@/components/icons";
 import { useCart } from "@/context/CartContext";
 
@@ -26,6 +26,7 @@ function formatDate(date: Date) {
 
 export default function MiOrdenPage() {
   const cart = useCart();
+  const router = useRouter();
   const order = cart.lastOrder ?? [];
   const [orderNumber] = useState(() => Math.floor(100000 + Math.random() * 900000));
 
@@ -37,12 +38,23 @@ export default function MiOrdenPage() {
   const shippingCost = order.length === 0 || hasFreeShipping ? 0 : SHIPPING_COST;
   const total = productsTotal + shippingCost;
 
+  function handleVolver() {
+    cart.setItems([]);
+    cart.setActiveBoxId(null);
+    router.push("/");
+  }
+
   return (
     <main className="flex flex-1 flex-col bg-[#fefafc] px-4 pt-4 pb-8">
       <div className="relative flex items-center justify-center py-2">
-        <Link href="/" aria-label="Volver" className="absolute left-0 flex h-10 w-10 items-center justify-center text-ink-9">
+        <button
+          type="button"
+          onClick={handleVolver}
+          aria-label="Volver"
+          className="absolute left-0 flex h-10 w-10 items-center justify-center text-ink-9"
+        >
           <ChevronLeftIcon className="h-6 w-6" />
-        </Link>
+        </button>
         <h1 className="text-[18px] font-bold text-[#1f2937]">Detalle de la orden</h1>
       </div>
 
