@@ -46,7 +46,7 @@ export default function CarroPage() {
   const jumboPrice = Math.round(cart.total * (1 + JUMBO_MARKUP));
   const liderPrice = Math.round(cart.total * (1 + LIDER_MARKUP));
   const higherPrice = Math.max(jumboPrice, liderPrice);
-  const savingsPercent = higherPrice > 0 ? Math.round((1 - cart.total / higherPrice) * 100) : 0;
+  const savingsAmount = higherPrice - cart.total;
 
   function handleMinus(id: string, quantity: number) {
     if (quantity <= 1) {
@@ -198,7 +198,7 @@ export default function CarroPage() {
               </div>
               <div className="flex items-end justify-between gap-2">
                 <p className="text-[12px] font-semibold whitespace-nowrap text-[#3c444f]">
-                  En GoodFresh te ahorras un <span className="text-[14px]">{savingsPercent}%</span>
+                  Te estás ahorrando <span className="text-[14px]">{formatPrice(savingsAmount)}</span>
                 </p>
                 <p className="text-[10px] whitespace-nowrap text-[#3c444f]">Precios verificados hoy en línea</p>
               </div>
