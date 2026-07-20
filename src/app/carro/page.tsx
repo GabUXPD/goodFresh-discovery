@@ -74,7 +74,7 @@ export default function CarroPage() {
       <div className="flex items-center justify-between border-b-8 border-[#f5f5f7] px-4 pb-4">
         <div className="flex flex-col">
           <p className="text-sm font-medium text-black">GoodFresh</p>
-          <p className="text-xs text-black">Vega central, Recoleta</p>
+          <p className="text-[14px] text-black">Directo de la vega a tu casa, a precio mayorista</p>
           <p className="text-[10px] font-bold text-black">La reserva de productos expirará en 00:09:46</p>
         </div>
         <div className="relative h-16 w-16 shrink-0">
@@ -192,11 +192,14 @@ export default function CarroPage() {
                   </span>
                 </div>
               </div>
-              <div className="flex items-end justify-between gap-2">
-                <p className="text-[12px] font-semibold whitespace-nowrap text-[#3c444f]">
-                  Te estás ahorrando <span className="text-[14px]">{formatPrice(savingsAmount)}</span>
-                </p>
-                <p className="text-[10px] whitespace-nowrap text-[#3c444f]">Precios verificados hoy en línea</p>
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-1">
+                  <p className="text-[12px] font-semibold whitespace-nowrap text-[#3c444f]">Te estás ahorrando</p>
+                  <span className="flex items-center rounded-full bg-aqua-3 px-1.5 py-0.5 text-[14px] font-semibold whitespace-nowrap text-black">
+                    {formatPrice(savingsAmount)}
+                  </span>
+                </div>
+                <p className="text-[9px] whitespace-nowrap text-[#3c444f]">Precios verificados hoy en línea</p>
               </div>
             </div>
           ))}
