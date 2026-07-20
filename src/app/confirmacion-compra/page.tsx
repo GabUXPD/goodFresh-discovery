@@ -14,7 +14,6 @@ import {
   CoinIcon,
   CouponIcon,
   FavoriteBadgeIcon,
-  InfoIcon,
   LocationTargetIcon,
   MoreVerticalIcon,
   SearchIcon,
@@ -225,12 +224,6 @@ export default function ConfirmacionCompraPage() {
           <div className="flex items-start justify-between text-[#9f9fad]">
             <span>Envío</span>
             <span>{formatPrice(shippingCost)}</span>
-          </div>
-          <div className="flex items-start justify-between text-[#9f9fad]">
-            <span className="flex items-center gap-1">
-              Tarifa por servicio <InfoIcon className="h-4 w-4" />
-            </span>
-            <span>{formatPrice(SERVICE_FEE)}</span>
           </div>
           <div className="flex items-start justify-between font-semibold text-[#4b5563]">
             <span>Total de la compra</span>
