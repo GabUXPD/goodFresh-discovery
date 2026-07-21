@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { MinusIcon, PlusIcon } from "./icons";
+import { useEffect, useRef, useState } from "react";
+import { ChevronDownIcon, ChevronUpIcon, MinusIcon, PlusIcon } from "./icons";
 import { useCart, RIPENESS_OPTIONS, type CartItem } from "@/context/CartContext";
 
 export type Product = {
@@ -24,6 +25,18 @@ export function ProductCard({ product }: { product: Product }) {
   const cartItem = cart.items.find((item) => item.id === product.id);
   const quantity = cartItem?.quantity ?? 0;
   const ripenessOptions = RIPENESS_OPTIONS[product.id];
+  const [ripenessExpanded, setRipenessExpanded] = useState(true);
+  const ripenessPopoverRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (ripenessPopoverRef.current && !ripenessPopoverRef.current.contains(event.target as Node)) {
+        setRipenessExpanded(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   function handleAdd() {
     cart.setItems((items) =>
@@ -62,7 +75,10 @@ export function ProductCard({ product }: { product: Product }) {
         <Image src={product.image} alt={product.name} fill sizes="80px" className="object-cover" />
       </div>
       {quantity > 0 && ripenessOptions ? (
-        <div className="absolute top-[3px] right-[3px] z-20 flex w-[100px] flex-col items-center rounded-t-2xl rounded-b-lg border border-neutro-4 bg-white shadow-[0px_0px_1px_rgba(0,0,0,0.04),0px_1px_1px_rgba(0,0,0,0.04)]">
+        <div
+          ref={ripenessPopoverRef}
+          className="absolute top-[3px] right-[3px] z-20 flex w-[100px] flex-col items-center rounded-t-2xl rounded-b-lg border border-neutro-4 bg-white shadow-[0px_0px_1px_rgba(0,0,0,0.04),0px_1px_1px_rgba(0,0,0,0.04)]"
+        >
           <div className="flex w-[100px] items-center justify-between rounded-full border border-neutro-5 bg-white p-1">
             <button
               type="button"
@@ -83,19 +99,31 @@ export function ProductCard({ product }: { product: Product }) {
             </button>
           </div>
           <div className="flex w-full flex-col items-center gap-2 px-1 pt-1 pb-2">
-            <p className="text-center text-[10px] text-[#5d6673]">Madurez:</p>
-            {ripenessOptions.map((option) => (
-              <button
-                key={option}
-                type="button"
-                onClick={() => setRipeness(option)}
-                className={`flex w-full items-center justify-center rounded-full border px-3 py-1 text-[10px] whitespace-nowrap ${
-                  cartItem?.ripeness === option ? "border-brand text-brand" : "border-[#c4c4c4] text-[#5d6673]"
-                }`}
-              >
-                {option}
-              </button>
-            ))}
+            <button
+              type="button"
+              onClick={() => setRipenessExpanded((v) => !v)}
+              className="flex w-full items-center justify-between pl-1"
+            >
+              <span className="text-[10px] font-bold text-[#5d6673]">Madurez:</span>
+              {ripenessExpanded ? (
+                <ChevronUpIcon className="h-4 w-4 text-[#5d6673]" />
+              ) : (
+                <ChevronDownIcon className="h-4 w-4 text-[#5d6673]" />
+              )}
+            </button>
+            {ripenessExpanded &&
+              ripenessOptions.map((option) => (
+                <button
+                  key={option}
+                  type="button"
+                  onClick={() => setRipeness(option)}
+                  className={`flex w-full items-center justify-center rounded-full border px-3 py-1 text-[10px] whitespace-nowrap ${
+                    cartItem?.ripeness === option ? "border-brand text-brand" : "border-[#c4c4c4] text-[#5d6673]"
+                  }`}
+                >
+                  {option}
+                </button>
+              ))}
           </div>
         </div>
       ) : quantity > 0 ? (

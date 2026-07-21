@@ -33,6 +33,7 @@ type CartContextValue = {
   activeBoxId: string | null;
   setActiveBoxId: (id: string | null) => void;
   lastOrder: CartItem[] | null;
+  setLastOrder: (items: CartItem[] | ((current: CartItem[] | null) => CartItem[] | null)) => void;
   lastOrderBoxId: string | null;
   saveLastOrder: () => void;
   repeatLastOrder: () => void;
@@ -59,7 +60,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   function saveLastOrder() {
-    setLastOrder(items);
+    // Los productos dejados en cantidad 0 no deben repetirse en el próximo pedido.
+    setLastOrder(items.filter((item) => item.quantity > 0));
     setLastOrderBoxId(activeBoxId);
     setIsRepeatOrder(false);
   }
@@ -83,6 +85,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         activeBoxId,
         setActiveBoxId,
         lastOrder,
+        setLastOrder,
         lastOrderBoxId,
         saveLastOrder,
         repeatLastOrder,

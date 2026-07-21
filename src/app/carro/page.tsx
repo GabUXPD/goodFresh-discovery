@@ -79,6 +79,11 @@ export default function CarroPage() {
   function handleMinus(id: string, quantity: number) {
     if (quantity <= 1) {
       cart.setItems((items) => items.map((item) => (item.id === id ? { ...item, quantity: 0 } : item)));
+      // Si viene de "Repite tu compra", el producto quitado no debe volver a
+      // aparecer la próxima vez que se repita el pedido.
+      if (cart.isRepeatOrder) {
+        cart.setLastOrder((order) => (order ? order.filter((item) => item.id !== id) : order));
+      }
     } else {
       cart.updateQuantity(id, -1);
     }
@@ -175,7 +180,7 @@ export default function CarroPage() {
               </div>
               {ripenessOptions && (
                 <div className={`flex items-center justify-end gap-1 ${disabled ? "pointer-events-none opacity-50" : ""}`}>
-                  <p className="text-center text-[10px] whitespace-nowrap text-[#5d6673]">Madurez:</p>
+                  <p className="text-center text-[10px] font-bold whitespace-nowrap text-[#5d6673]">Madurez:</p>
                   {ripenessOptions.map((option) => (
                     <button
                       key={option}

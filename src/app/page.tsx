@@ -1,10 +1,10 @@
 import Image from "next/image";
-import { BellIcon, ChevronLeftIcon, DeliveryIcon, LeafIcon } from "@/components/icons";
+import { DeliveryIcon, LeafIcon } from "@/components/icons";
 import { type Box } from "@/components/BoxCard";
 import { type Product } from "@/components/ProductCard";
 import { BottomCartBar } from "@/components/BottomCartBar";
-import { HeaderCartButton } from "@/components/HeaderCartButton";
 import { StoreContent } from "@/components/StoreContent";
+import { StoreHeader } from "@/components/StoreHeader";
 import { catalog } from "@/data/catalog";
 
 // Contenido y visibilidad verificados directamente contra los nodos del Figma
@@ -70,25 +70,7 @@ export default function TiendaGoodFreshPage() {
       {/* Foto de portada + header flotante */}
       <div className="relative h-[160px] w-full shrink-0">
         <Image src="/images/portadaTienda.png" alt="Frutas y verduras frescas en la tienda GoodFresh" fill priority sizes="430px" className="object-cover" />
-        <div className="absolute inset-x-0 top-0 flex items-center justify-between p-4">
-          <button
-            type="button"
-            aria-label="Volver"
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-ink-9 shadow-sm"
-          >
-            <ChevronLeftIcon className="h-5 w-5" />
-          </button>
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              aria-label="Notificaciones"
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-ink-9 shadow-sm"
-            >
-              <BellIcon className="h-5 w-5" />
-            </button>
-            <HeaderCartButton />
-          </div>
-        </div>
+        <StoreHeader />
       </div>
 
       {/* Info de la tienda */}

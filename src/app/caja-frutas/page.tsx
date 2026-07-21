@@ -205,7 +205,7 @@ export default function CajaFrutasPage() {
             </div>
             {item.ripeness && (
               <div className="flex items-center justify-end gap-1">
-                <span className="text-[10px] text-[#5d6673]">Madurez:</span>
+                <span className="text-[10px] font-bold text-[#5d6673]">Madurez:</span>
                 {(RIPENESS_OPTIONS[item.id] ?? DEFAULT_RIPENESS_OPTIONS).map((option) => (
                   <button
                     key={option}
