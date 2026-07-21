@@ -263,18 +263,23 @@ export default function CarroPage() {
           <p className="text-base font-semibold" style={{ color: CART_PINK }}>
             Total a pagar
           </p>
-          <div className="flex flex-col items-end">
-            <p className="text-base font-semibold" style={{ color: CART_PINK }}>
-              {formatPrice(availableTotal)}
-            </p>
-            {hasFreeShipping ? (
-              <span className="flex items-center gap-1 rounded-full bg-aqua-4 px-2 py-0.5 text-[10px] text-black">
+          {hasFreeShipping ? (
+            <div className="flex items-center gap-1">
+              <span className="flex items-center gap-1 rounded-full bg-aqua-3 px-2 py-0.5 text-[10px] text-black">
                 🥳 ¡Ya tienes el envío gratis!
               </span>
-            ) : (
+              <p className="text-base font-semibold" style={{ color: CART_PINK }}>
+                {formatPrice(availableTotal)}
+              </p>
+            </div>
+          ) : (
+            <div className="flex flex-col items-end">
+              <p className="text-base font-semibold" style={{ color: CART_PINK }}>
+                {formatPrice(availableTotal)}
+              </p>
               <p className="text-[10px] font-bold text-aqua-7">Envío gratis desde $40.000</p>
-            )}
-          </div>
+            </div>
+          )}
         </div>
         {isBelowMinimum ? (
           <Link

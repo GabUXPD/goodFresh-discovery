@@ -159,7 +159,7 @@ export default function ConfirmacionCompraPage() {
               </div>
               <div className="flex items-center gap-2">
                 {hasFreeShipping ? (
-                  <span className="rounded-full bg-aqua-4 px-2 py-0.5 text-[12px] whitespace-nowrap text-black">
+                  <span className="rounded-full bg-aqua-3 px-2 py-0.5 text-[12px] whitespace-nowrap text-black">
                     🥳 ¡Ya tienes el envío gratis!
                   </span>
                 ) : (
