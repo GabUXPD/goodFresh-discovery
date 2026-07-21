@@ -67,7 +67,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
   }, [pathname]);
 
   return (
-    <div className="relative flex flex-1 flex-col overflow-hidden">
+    <div className="relative flex flex-1 flex-col">
       <div ref={containerRef} className="flex flex-1 flex-col">
         {children}
       </div>

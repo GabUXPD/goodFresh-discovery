@@ -38,7 +38,7 @@ export function StoreContent({
 
   return (
     <>
-      <div className="mt-4">
+      <div className="sticky top-[72px] z-10 mt-4 bg-white">
         <CategoryTabs active={activeTab} onChange={setActiveTab} />
       </div>
 
@@ -60,7 +60,7 @@ export function StoreContent({
           <section className="flex flex-col gap-3 bg-neutro-3 py-4">
             <div className="px-4">
               <h2 className="text-base font-bold text-ink-9">Arma tu pedido como quieras</h2>
-              <p className="text-[14px] text-neutro-8">Te proponemos el punto de partida, tú ajustas lo que necesitas</p>
+              <p className="text-[14px] text-[#3c444f]">Te proponemos lo esencial, tú agregas el resto</p>
             </div>
             <div className="flex gap-2 overflow-x-auto px-4 pb-2">
               {boxes.map((box) => (

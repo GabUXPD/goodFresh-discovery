@@ -31,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`${axiforma.variable} h-full antialiased`}>
+    <html lang="es" className={`${axiforma.variable} h-full overflow-x-hidden antialiased`}>
       <body className="min-h-full bg-neutro-4">
         <div className="mx-auto flex min-h-dvh w-full max-w-[430px] flex-col bg-white">
           <CartProvider>

@@ -155,7 +155,7 @@ export default function CajaFrutasPage() {
       {/* Info del pack */}
       <div className="flex flex-col gap-4 border-b border-[#f5f5f7] px-4 pt-4 pb-3.5">
         <div className="flex w-full items-center gap-4">
-          <h1 className="flex-1 text-xl font-bold text-ink-9">Caja esencial frutas</h1>
+          <h1 className="flex-1 text-xl font-bold text-ink-9">Caja frutas</h1>
         </div>
         <p className="text-[14px] text-ink-9" style={{ lineHeight: 1.7 }}>
           Saca y agrega lo que necesitas

@@ -140,7 +140,7 @@ export default function CajaEnsaladasPage() {
       {/* Hero: dos fotos lado a lado */}
       <div className="flex w-full">
         <div className="relative h-[151px] w-[64.4%]">
-          <Image src="/images/cajaVerduras.png" alt="Caja ensalada" fill priority sizes="252px" className="object-cover" />
+          <Image src="/images/cajaVerduras2.png" alt="Caja ensalada" fill priority sizes="252px" className="object-cover" />
         </div>
         <div className="relative h-[151px] w-[35.6%]">
           <Image src="/images/cajaverdurasGrande.png" alt="Recuerda devolver tu caja" fill sizes="139px" className="object-cover" />
@@ -150,7 +150,7 @@ export default function CajaEnsaladasPage() {
       {/* Info del pack */}
       <div className="flex flex-col gap-4 border-b border-[#f5f5f7] px-4 pt-4 pb-3.5">
         <div className="flex w-full items-center gap-4">
-          <h1 className="flex-1 text-xl font-bold text-ink-9">Caja esencial ensaladas</h1>
+          <h1 className="flex-1 text-xl font-bold text-ink-9">Caja verduras</h1>
         </div>
         <p className="text-[14px] text-ink-9" style={{ lineHeight: 1.7 }}>
           Saca y agrega lo que necesitas

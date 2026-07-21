@@ -19,9 +19,9 @@ const REDIRECT_DELAY_MS = 3000;
 // de una caja (productos elegidos uno a uno), se muestra la cantidad de
 // productos seleccionados en vez de un nombre de caja.
 const BOX_NAMES: Record<string, string> = {
-  "caja-ensaladas": "Caja esencial ensaladas",
-  "caja-frutas": "Caja esencial frutas",
-  "caja-completa": "Caja esencial completa",
+  "caja-ensaladas": "Caja verduras",
+  "caja-frutas": "Caja frutas",
+  "caja-completa": "Caja completa",
 };
 
 function formatPrice(value: number) {

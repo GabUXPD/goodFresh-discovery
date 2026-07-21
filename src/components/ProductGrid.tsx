@@ -35,28 +35,30 @@ export function ProductGrid({ products }: { products: Product[] }) {
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="tap-scale flex w-full items-center gap-1 rounded-full border border-neutro-8 bg-white px-4 py-2">
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Buscar producto"
-          className="flex-1 bg-transparent text-[14px] text-ink-9 placeholder:text-neutro-9 focus:outline-none"
-        />
-        {isSearching ? (
-          <button
-            type="button"
-            aria-label="Limpiar búsqueda"
-            onClick={() => setQuery("")}
-            className="flex items-center justify-center rounded-full p-1"
-          >
-            <CloseIcon className="h-3 w-3 text-neutro-9" />
-          </button>
-        ) : (
-          <div className="flex items-center justify-center rounded-full p-1">
-            <SearchIcon className="h-[24px] w-[24px] text-neutro-9" />
-          </div>
-        )}
+      <div className="sticky top-[106px] z-10 bg-white pt-1 pb-1">
+        <div className="tap-scale flex w-full items-center gap-1 rounded-full border border-neutro-8 bg-white px-4 py-2">
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Buscar producto"
+            className="flex-1 bg-transparent text-[14px] text-ink-9 placeholder:text-neutro-9 focus:outline-none"
+          />
+          {isSearching ? (
+            <button
+              type="button"
+              aria-label="Limpiar búsqueda"
+              onClick={() => setQuery("")}
+              className="flex items-center justify-center rounded-full p-1"
+            >
+              <CloseIcon className="h-3 w-3 text-neutro-9" />
+            </button>
+          ) : (
+            <div className="flex items-center justify-center rounded-full p-1">
+              <SearchIcon className="h-[24px] w-[24px] text-neutro-9" />
+            </div>
+          )}
+        </div>
       </div>
 
       {isSearching && searchResults.length === 0 && (
