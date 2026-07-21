@@ -325,8 +325,10 @@ export default function CajaCompletaPage() {
         ))}
       </div>
 
+      <div className="h-[124px] shrink-0" />
+
       {/* Barra inferior */}
-      <div className="sticky bottom-0 z-10 flex flex-col gap-2.5 rounded-b-card bg-white px-4 py-3 shadow-[0_-10px_5px_rgba(0,0,0,0.03)]">
+      <div className="fixed inset-x-0 bottom-0 z-10 mx-auto flex w-full max-w-[430px] flex-col gap-2.5 rounded-b-card bg-white px-4 py-3 shadow-[0_-10px_5px_rgba(0,0,0,0.03)]">
         <div className="flex items-center justify-between">
           <div className="flex flex-col">
             <p className="text-xl font-black text-ink-9">{formatPrice(total)}</p>
