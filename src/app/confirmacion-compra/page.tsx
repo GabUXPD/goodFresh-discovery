@@ -157,7 +157,18 @@ export default function ConfirmacionCompraPage() {
                 </span>
                 <span className="text-xs text-neutro-9">24 - 48 horas</span>
               </div>
-              <span className="text-xs text-neutro-9">{formatPrice(shippingCost)}</span>
+              <div className="flex items-center gap-2">
+                {hasFreeShipping ? (
+                  <span className="rounded-full bg-aqua-4 px-2 py-0.5 text-[12px] whitespace-nowrap text-black">
+                    🥳 ¡Ya tienes el envío gratis!
+                  </span>
+                ) : (
+                  <span className="rounded-full bg-brand-1 px-1.5 py-0.5 text-[12px] whitespace-nowrap text-brand">
+                    Envío gratis desde $40.000
+                  </span>
+                )}
+                <span className="text-xs text-neutro-9">{formatPrice(shippingCost)}</span>
+              </div>
             </button>
           </div>
         </div>

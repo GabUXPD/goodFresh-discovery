@@ -131,7 +131,7 @@ export default function CajaCompletaPage() {
   return (
     <main className="flex flex-1 flex-col">
       {/* Header */}
-      <div className="flex w-full items-center justify-between bg-white px-3 py-3">
+      <div className="fixed inset-x-0 top-0 z-20 mx-auto flex w-full max-w-[430px] items-center justify-between bg-white px-3 py-3">
         <Link
           href="/"
           aria-label="Volver"
@@ -153,6 +153,7 @@ export default function CajaCompletaPage() {
           )}
         </button>
       </div>
+      <div className="h-16 shrink-0" />
 
       {/* Hero: dos fotos lado a lado */}
       <div className="flex w-full">
