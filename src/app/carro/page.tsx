@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ChevronLeftIcon, CompareSpinnerIcon, MinusIcon, PlusIcon, WarningIcon } from "@/components/icons";
+import { ChevronLeftIcon, CompareSpinnerIcon, MinusIcon, PlusIcon, TruckIcon, WarningIcon } from "@/components/icons";
 import { RIPENESS_OPTIONS, useCart, type CartItem } from "@/context/CartContext";
 
 // Contenido y estructura verificados contra el nodo de Figma "Carro de compras"
@@ -19,6 +19,7 @@ const CART_PINK = "#ff18a6";
 const DISABLED_GREY = "#d0d5dd";
 const MIN_TOTAL = 12000;
 const FREE_SHIPPING_THRESHOLD = 40000;
+const NEAR_FREE_SHIPPING_THRESHOLD = 35000;
 const JUMBO_MARKUP = 0.3;
 const LIDER_MARKUP = 0.24;
 const COMPARISON_LOADING_MS = 2000;
@@ -65,6 +66,9 @@ export default function CarroPage() {
   );
   const isBelowMinimum = cart.items.length > 0 && availableTotal < MIN_TOTAL;
   const hasFreeShipping = availableTotal >= FREE_SHIPPING_THRESHOLD;
+  const isNearFreeShipping = availableTotal >= NEAR_FREE_SHIPPING_THRESHOLD && availableTotal < FREE_SHIPPING_THRESHOLD;
+  const remainingForFreeShipping = FREE_SHIPPING_THRESHOLD - availableTotal;
+  const freeShippingProgress = Math.min(100, (availableTotal / FREE_SHIPPING_THRESHOLD) * 100);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsComparing(false), COMPARISON_LOADING_MS);
@@ -211,6 +215,24 @@ export default function CarroPage() {
       <div className="fixed inset-x-0 bottom-0 z-10 mx-auto flex w-full max-w-[430px] flex-col gap-4 border-t-8 border-[#f5f5f7] bg-white px-4 pt-4 pb-3">
         {cart.items.length > 0 && !isBelowMinimum && (
           <div className="flex flex-col gap-1">
+            {isNearFreeShipping && (
+              <div className="mb-2 flex flex-col gap-1">
+                <div className="flex items-center justify-between">
+                  <p className="text-[12px] text-[#3c444f]">
+                    Te faltan sólo <span className="font-bold">{formatPrice(remainingForFreeShipping)}</span> para tener el envío
+                    gratis
+                  </p>
+                  <TruckIcon className="h-4 w-4 shrink-0 text-[#3c444f]" />
+                </div>
+                <div className="h-1 w-full rounded-full bg-[#f4f4f9]">
+                  <div className="h-1 rounded-full bg-aqua-5" style={{ width: `${freeShippingProgress}%` }} />
+                </div>
+                <div className="flex items-center justify-between text-[10px] font-semibold text-[#3c444f]">
+                  <p>{formatPrice(availableTotal)}</p>
+                  <p>{formatPrice(FREE_SHIPPING_THRESHOLD)}</p>
+                </div>
+              </div>
+            )}
             <Link
               href="/#producto-a-producto"
               className="tap-scale mb-2 flex w-full items-center justify-center rounded-full border border-brand bg-white px-3 py-[11px] text-[14px] leading-[1.5] font-medium whitespace-nowrap text-brand shadow-sm"
