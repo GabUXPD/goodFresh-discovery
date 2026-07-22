@@ -259,7 +259,7 @@ export default function CarroPage() {
             </p>
           </div>
         )}
-        <div className="flex items-center justify-between">
+        <div className="flex items-start justify-between">
           <p className="text-base font-semibold" style={{ color: CART_PINK }}>
             Total a pagar
           </p>
