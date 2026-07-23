@@ -94,7 +94,7 @@ export default function TiendaGoodFreshPage() {
                 Directo de la vega a tu casa,
                 <br />
                 <span className="font-bold" style={{ lineHeight: 1.5 }}>
-                  a precio mayorista
+                  a precios convenientes
                 </span>
               </p>
             </div>
@@ -120,7 +120,7 @@ export default function TiendaGoodFreshPage() {
             </div>
             <div className="flex flex-col items-start">
               <p className="text-xs text-neutro-8" style={{ lineHeight: 1.7 }}>Entrega</p>
-              <p className="text-xs font-medium text-ink-4">Hasta 24 hrs.</p>
+              <p className="text-xs font-medium text-ink-4">1 día hábil</p>
             </div>
           </div>
         </div>
