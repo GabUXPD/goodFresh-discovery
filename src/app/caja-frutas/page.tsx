@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -50,6 +50,16 @@ const initialSuggested: SuggestedItem[] = [
   { id: "pera", name: "Pera", unit: "500 gr.", price: 2000, image: "/images/pera.png" },
 ];
 
+const SUGGESTED_PAGE_SIZE = 4;
+// Sugerencias curadas primero; el resto del catálogo queda disponible para
+// reponer automáticamente a medida que se agregan productos o se hace scroll.
+const SUGGESTION_POOL: SuggestedItem[] = [
+  ...initialSuggested,
+  ...catalog.filter(
+    (p) => !initialIncluded.some((i) => i.id === p.id) && !initialSuggested.some((s) => s.id === p.id)
+  ),
+];
+
 function formatPrice(value: number) {
   return `$${new Intl.NumberFormat("es-CL").format(value)}`;
 }
@@ -61,16 +71,33 @@ export default function CajaFrutasPage() {
   const [included, setIncluded] = useState<IncludedItem[]>(() =>
     cart.activeBoxId === "caja-frutas" ? cart.items : initialIncluded
   );
-  const [suggested, setSuggested] = useState(initialSuggested);
+  const [visibleSuggestedCount, setVisibleSuggestedCount] = useState(SUGGESTED_PAGE_SIZE);
+  const suggestedSentinelRef = useRef<HTMLDivElement>(null);
   const [query, setQuery] = useState("");
   const router = useRouter();
 
   const total = included.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const includedIds = new Set(included.map((item) => item.id));
+  const suggestionCandidates = SUGGESTION_POOL.filter((p) => !includedIds.has(p.id));
+  const suggested = suggestionCandidates.slice(0, visibleSuggestedCount);
   const searchResults =
     query.trim().length > 0
       ? catalog.filter((p) => normalize(p.name).includes(normalize(query)) && !includedIds.has(p.id)).slice(0, 8)
       : [];
+
+  useEffect(() => {
+    function checkSentinel() {
+      const sentinel = suggestedSentinelRef.current;
+      if (!sentinel) return;
+      const rect = sentinel.getBoundingClientRect();
+      if (rect.top < window.innerHeight + 200) {
+        setVisibleSuggestedCount((count) => Math.min(count + SUGGESTED_PAGE_SIZE, suggestionCandidates.length));
+      }
+    }
+    checkSentinel();
+    window.addEventListener("scroll", checkSentinel);
+    return () => window.removeEventListener("scroll", checkSentinel);
+  }, [suggestionCandidates.length, visibleSuggestedCount]);
 
   function updateQuantity(id: string, delta: number) {
     setIncluded((items) =>
@@ -92,14 +119,12 @@ export default function CajaFrutasPage() {
 
   function addSuggested(item: SuggestedItem) {
     setIncluded((items) => (items.some((i) => i.id === item.id) ? items : [...items, { ...item, quantity: 1 }]));
-    setSuggested((items) => items.filter((i) => i.id !== item.id));
   }
 
   function addFromSearch(product: CatalogProduct) {
     setIncluded((items) =>
       items.some((i) => i.id === product.id) ? items : [...items, { ...product, quantity: 1, ...SEARCH_ADD_EXTRAS[product.id] }]
     );
-    setSuggested((items) => items.filter((i) => i.id !== product.id));
     setQuery("");
   }
 
@@ -239,7 +264,7 @@ export default function CajaFrutasPage() {
       </div>
 
       {/* Buscador */}
-      <div className="flex flex-col gap-2 px-4 pt-1 pb-2">
+      <div className="sticky top-16 z-10 flex flex-col gap-2 bg-white px-4 pt-1 pb-2">
         <p className="text-center text-[14px] text-ink-9">¿Quieres agregar algo más?</p>
         <div className="tap-scale flex w-full items-center gap-1 rounded-full border border-neutro-8 bg-white px-4 py-1">
           <input
@@ -264,7 +289,9 @@ export default function CajaFrutasPage() {
             </div>
           )}
         </div>
+      </div>
 
+      <div className="flex flex-col gap-2 px-4 pb-2">
         {query.trim().length > 0 && (
           <div className="flex flex-col gap-2 pt-1">
             {searchResults.length === 0 && (
@@ -324,6 +351,7 @@ export default function CajaFrutasPage() {
             </div>
           </div>
         ))}
+        {visibleSuggestedCount < suggestionCandidates.length && <div ref={suggestedSentinelRef} className="h-1" />}
       </div>
 
       <div className="h-[124px] shrink-0" />

@@ -17,7 +17,7 @@ import {
   LocationTargetIcon,
   MoreVerticalIcon,
   SearchIcon,
-  WalkingIcon,
+  TruckIcon,
 } from "@/components/icons";
 import { useCart } from "@/context/CartContext";
 import { SAVED_ADDRESSES } from "@/data/addresses";
@@ -125,7 +125,7 @@ export default function ConfirmacionCompraPage() {
           <div className="flex flex-col rounded-xl border border-neutro-5">
             <div className="flex h-14 items-center justify-between rounded-t-xl px-4">
               <div className="flex items-center gap-2 text-sm text-ink-9">
-                <WalkingIcon className="h-6 w-6" />
+                <TruckIcon className="h-6 w-6" />
                 <span>Delivery</span>
               </div>
               <div className="flex h-4 w-4 items-center justify-center rounded bg-brand">

@@ -321,7 +321,7 @@ export default function CarroPage() {
                 : "tap-scale flex w-full items-center justify-center rounded-full bg-brand px-6 py-4 text-sm font-bold text-brand-1 shadow-sm"
             }
           >
-            Comprar
+            Continuar
           </button>
         )}
       </div>
