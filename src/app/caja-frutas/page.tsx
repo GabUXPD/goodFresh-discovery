@@ -78,12 +78,11 @@ export default function CajaFrutasPage() {
     );
   }
 
-  function removeIncluded(id: string) {
-    const removed = included.find((item) => item.id === id);
-    setIncluded((items) => items.filter((item) => item.id !== id));
-    if (removed) {
-      const { name, unit, price, image } = removed;
-      setSuggested((items) => [...items, { id, name, unit, price, image }]);
+  function handleMinus(id: string, quantity: number) {
+    if (quantity <= 1) {
+      setIncluded((items) => items.map((item) => (item.id === id ? { ...item, quantity: 0 } : item)));
+    } else {
+      updateQuantity(id, -1);
     }
   }
 
@@ -168,60 +167,75 @@ export default function CajaFrutasPage() {
           <h2 className="text-sm font-bold text-ink-9">Productos incluidos</h2>
         </div>
 
-        {included.map((item) => (
-          <div key={item.id} className="flex flex-col gap-2 rounded-lg border border-neutro-4 bg-white p-2">
-            <div className="flex items-center justify-between">
-              <div className="flex w-[94px] items-center gap-2">
-                <div className="relative h-8 w-8 shrink-0">
-                  <Image src={item.image} alt={item.name} fill sizes="32px" className="object-cover" />
+        {included.map((item) => {
+          const disabled = item.quantity === 0;
+          return (
+            <div key={item.id} className="flex flex-col gap-2 rounded-lg border border-neutro-4 bg-white p-2">
+              <div className="flex items-center justify-between">
+                <div className="flex w-[94px] items-center gap-2">
+                  <div className={`relative h-8 w-8 shrink-0 ${disabled ? "opacity-30" : ""}`}>
+                    <Image src={item.image} alt={item.name} fill sizes="32px" className="object-cover" />
+                  </div>
+                  <div className="flex flex-col">
+                    <p className={`truncate text-xs font-medium ${disabled ? "text-[#8590a0]" : "text-ink-9"}`}>{item.name}</p>
+                    <div className="flex items-center gap-0.5">
+                      <p className={`text-[10px] ${disabled ? "text-[#d0d5dd]" : "text-ink-3"}`}>{item.unit}</p>
+                      {item.badge && (
+                        <span className="rounded-full bg-green-1 px-1 py-px text-[9px] text-aqua-7">{item.badge}</span>
+                      )}
+                    </div>
+                  </div>
                 </div>
-                <div className="flex flex-col">
-                  <p className="truncate text-xs font-medium text-ink-9">{item.name}</p>
-                  <div className="flex items-center gap-0.5">
-                    <p className="text-[10px] text-ink-3">{item.unit}</p>
-                    {item.badge && (
-                      <span className="rounded-full bg-green-1 px-1 py-px text-[9px] text-aqua-7">{item.badge}</span>
-                    )}
+                <div className="flex items-center gap-2">
+                  <p className={`text-xs font-bold ${disabled ? "text-[#8590a0]" : "text-ink-9"}`}>
+                    {formatPrice(item.price * item.quantity)}
+                  </p>
+                  <div className="flex w-[100px] items-center justify-between rounded-full border border-neutro-5 bg-white p-1">
+                    <button
+                      type="button"
+                      aria-label="Restar"
+                      disabled={disabled}
+                      onClick={() => handleMinus(item.id, item.quantity)}
+                      className="flex h-6 w-6 items-center justify-center disabled:cursor-not-allowed"
+                    >
+                      <MinusIcon className={`h-4 w-4 ${disabled ? "text-[#8590a0]" : "text-ink-9"}`} />
+                    </button>
+                    <span className={`text-xs font-medium ${disabled ? "text-[#8590a0]" : "text-ink-9"}`}>{item.quantity}</span>
+                    <button
+                      type="button"
+                      aria-label="Sumar"
+                      onClick={() => updateQuantity(item.id, 1)}
+                      className="flex h-6 w-6 items-center justify-center"
+                    >
+                      <PlusIcon className={`h-4 w-4 ${disabled ? "text-[#1a1e23]" : "text-ink-9"}`} />
+                    </button>
                   </div>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
-                <p className="text-xs font-bold text-ink-9">{formatPrice(item.price * item.quantity)}</p>
-                <div className="flex w-[100px] items-center justify-between rounded-full border border-neutro-5 bg-white p-1">
-                  <button
-                    type="button"
-                    aria-label={item.quantity <= 1 ? `Quitar ${item.name}` : "Restar"}
-                    onClick={() => (item.quantity <= 1 ? removeIncluded(item.id) : updateQuantity(item.id, -1))}
-                    className="flex h-6 w-6 items-center justify-center"
-                  >
-                    <MinusIcon className="h-4 w-4 text-ink-9" />
-                  </button>
-                  <span className="text-xs font-medium text-ink-9">{item.quantity}</span>
-                  <button type="button" aria-label="Sumar" onClick={() => updateQuantity(item.id, 1)} className="flex h-6 w-6 items-center justify-center">
-                    <PlusIcon className="h-4 w-4 text-ink-9" />
-                  </button>
+              {item.ripeness && (
+                <div className={`flex items-center justify-end gap-1 ${disabled ? "pointer-events-none" : ""}`}>
+                  <span className="text-[10px] font-bold text-[#5d6673]">Madurez:</span>
+                  {(RIPENESS_OPTIONS[item.id] ?? DEFAULT_RIPENESS_OPTIONS).map((option) => (
+                    <button
+                      key={option}
+                      type="button"
+                      onClick={() => setRipeness(item.id, option)}
+                      className={`rounded-full border px-3 py-1 text-[10px] ${
+                        item.ripeness === option
+                          ? disabled
+                            ? "border-[#979797] text-[#979797]"
+                            : "border-brand text-brand"
+                          : "border-[#c4c4c4] text-[#5d6673]"
+                      }`}
+                    >
+                      {option}
+                    </button>
+                  ))}
                 </div>
-              </div>
+              )}
             </div>
-            {item.ripeness && (
-              <div className="flex items-center justify-end gap-1">
-                <span className="text-[10px] font-bold text-[#5d6673]">Madurez:</span>
-                {(RIPENESS_OPTIONS[item.id] ?? DEFAULT_RIPENESS_OPTIONS).map((option) => (
-                  <button
-                    key={option}
-                    type="button"
-                    onClick={() => setRipeness(item.id, option)}
-                    className={`rounded-full border px-3 py-1 text-[10px] ${
-                      item.ripeness === option ? "border-brand text-brand" : "border-[#c4c4c4] text-[#5d6673]"
-                    }`}
-                  >
-                    {option}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Buscador */}
