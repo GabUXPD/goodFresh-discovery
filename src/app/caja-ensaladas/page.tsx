@@ -164,7 +164,7 @@ export default function CajaEnsaladasPage() {
       {/* Hero: dos fotos lado a lado */}
       <div className="flex w-full">
         <div className="relative h-[151px] w-[64.4%]">
-          <Image src="/images/cajaVerduras2.png" alt="Caja ensalada" fill priority sizes="252px" className="object-cover" />
+          <Image src="/images/cajaVerduras3.png" alt="Caja ensalada" fill priority sizes="252px" className="object-cover" />
         </div>
         <div className="relative h-[151px] w-[35.6%]">
           <Image src="/images/cajaverdurasGrande.png" alt="Recuerda devolver tu caja" fill sizes="139px" className="object-cover" />
