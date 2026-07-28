@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ChevronLeftIcon } from "@/components/icons";
 import { useCart } from "@/context/CartContext";
@@ -130,6 +131,15 @@ export default function MiOrdenPage() {
 
         <div className="flex justify-end px-4 pb-4">
           <p className="cursor-pointer text-[12px] font-medium text-brand underline">Cancelar mi pedido</p>
+        </div>
+      </div>
+
+      <div className="mt-4 flex flex-col items-center gap-2 rounded-2xl bg-white px-2 py-4 shadow-[0px_1px_3px_-1px_rgba(0,0,0,0.15),0px_4px_6px_-1px_rgba(0,0,0,0.1)]">
+        <p className="text-center text-[14px] font-semibold text-[#3c444f]">
+          Devuelve la caja en tu próximo pedido: al repartidor o déjala en conserjería.
+        </p>
+        <div className="relative h-[176px] w-[241px]">
+          <Image src="/images/recuerda-devolver-caja2.png" alt="Recuerda devolver tu caja" fill className="object-contain" />
         </div>
       </div>
 
