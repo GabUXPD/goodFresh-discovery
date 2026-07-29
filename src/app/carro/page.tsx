@@ -20,6 +20,7 @@ const DISABLED_GREY = "#d0d5dd";
 const MIN_TOTAL = 12000;
 const FREE_SHIPPING_THRESHOLD = 40000;
 const NEAR_FREE_SHIPPING_THRESHOLD = 35000;
+const SHIPPING_COST = 2400;
 const JUMBO_MARKUP = 0.3;
 const LIDER_MARKUP = 0.24;
 const COMPARISON_LOADING_MS = 2000;
@@ -217,18 +218,19 @@ export default function CarroPage() {
           <div className="flex flex-col gap-1">
             {isNearFreeShipping && (
               <div className="mb-2 flex flex-col gap-1">
-                <div className="flex items-center justify-between">
-                  <p className="text-[12px] text-[#3c444f]">
-                    Te faltan sólo <span className="font-bold">{formatPrice(remainingForFreeShipping)}</span> para tener el envío
-                    gratis
-                  </p>
-                  <TruckIcon className="h-4 w-4 shrink-0 text-[#3c444f]" />
-                </div>
+                <p className="text-[12px] text-[#3c444f]">
+                  Te faltan sólo <span className="font-bold">{formatPrice(remainingForFreeShipping)}</span> para tener el envío
+                  gratis.
+                </p>
                 <div className="h-1 w-full rounded-full bg-[#f4f4f9]">
                   <div className="h-1 rounded-full bg-aqua-5" style={{ width: `${freeShippingProgress}%` }} />
                 </div>
                 <div className="flex items-center justify-between text-[10px] font-semibold text-[#3c444f]">
-                  <p>{formatPrice(availableTotal)}</p>
+                  <div className="flex items-center gap-1">
+                    <TruckIcon className="h-4 w-4 shrink-0 text-[#3c444f]" />
+                    <p>Costo envío: {formatPrice(SHIPPING_COST)}</p>
+                    <p>Dirección registrada</p>
+                  </div>
                   <p>{formatPrice(FREE_SHIPPING_THRESHOLD)}</p>
                 </div>
               </div>
