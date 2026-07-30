@@ -118,7 +118,11 @@ export default function CarroPage() {
     return (
       <main className="flex flex-1 flex-col">
         <div className="flex w-full items-center gap-1 bg-white px-3 pt-3 pb-2">
-          <Link href={boxHref} aria-label="Volver" className="flex h-10 w-10 items-center justify-center rounded-full text-ink-9">
+          <Link
+            href="/#producto-a-producto"
+            aria-label="Volver"
+            className="flex h-10 w-10 items-center justify-center rounded-full text-ink-9"
+          >
             <ChevronLeftIcon className="h-6 w-6" />
           </Link>
           <h1 className="flex-1 pr-10 text-center text-base font-semibold text-ink-9">Carro de compras</h1>
