@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ChevronLeftIcon, CompareSpinnerIcon, MinusIcon, PlusIcon, TruckIcon, WarningIcon } from "@/components/icons";
+import { CartIcon, ChevronLeftIcon, CompareSpinnerIcon, MinusIcon, PlusIcon, TruckIcon, WarningIcon } from "@/components/icons";
 import { RIPENESS_OPTIONS, useCart, type CartItem } from "@/context/CartContext";
 
 // Contenido y estructura verificados contra el nodo de Figma "Carro de compras"
@@ -24,6 +24,7 @@ const SHIPPING_COST = 2400;
 const JUMBO_MARKUP = 0.3;
 const LIDER_MARKUP = 0.24;
 const COMPARISON_LOADING_MS = 2000;
+const MODAL_TRANSITION_MS = 300;
 
 // No existe un backend/inventario real en este prototipo: se simula que estos
 // productos quedaron sin stock entre pedidos. Solo se muestran como no
@@ -39,6 +40,8 @@ export default function CarroPage() {
   const cart = useCart();
   const router = useRouter();
   const [isComparing, setIsComparing] = useState(true);
+  const [vaciarModalVisible, setVaciarModalVisible] = useState(false);
+  const [vaciarModalClosing, setVaciarModalClosing] = useState(false);
   // Si el carro tiene una caja activa (el usuario armó "Caja ensalada", "Caja
   // frutas" o "Caja completa"), se vuelve a esa misma caja. Si los productos
   // vienen solo de "O elige producto a producto" en la tienda (sin caja
@@ -98,6 +101,43 @@ export default function CarroPage() {
     cart.setItems((items) => items.map((item) => (item.id === id ? { ...item, ripeness } : item)));
   }
 
+  function closeVaciarModal() {
+    setVaciarModalClosing(true);
+    window.setTimeout(() => {
+      setVaciarModalVisible(false);
+      setVaciarModalClosing(false);
+    }, MODAL_TRANSITION_MS);
+  }
+
+  function handleVaciarCarro() {
+    cart.setItems([]);
+    closeVaciarModal();
+  }
+
+  if (cart.items.length === 0) {
+    return (
+      <main className="flex flex-1 flex-col">
+        <div className="flex w-full items-center gap-1 bg-white px-3 pt-3 pb-2">
+          <Link href={boxHref} aria-label="Volver" className="flex h-10 w-10 items-center justify-center rounded-full text-ink-9">
+            <ChevronLeftIcon className="h-6 w-6" />
+          </Link>
+          <h1 className="flex-1 pr-10 text-center text-base font-semibold text-ink-9">Carro de compras</h1>
+        </div>
+        <div className="flex flex-1 flex-col items-center justify-center gap-8 px-4 text-center">
+          <CartIcon className="h-20 w-20 text-brand" />
+          <div className="flex flex-col items-center gap-4">
+            <h2 className="text-[20px] leading-[1.4] font-bold text-black">
+              No hay productos
+              <br />
+              en el carro
+            </h2>
+            <p className="text-[14px] text-black">Vuelve a la tienda y selecciona los productos que quieres comprar</p>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className="flex flex-1 flex-col">
       {/* Header + banner tienda (fijos arriba) */}
@@ -122,8 +162,18 @@ export default function CarroPage() {
       <div className="h-[116px] shrink-0" />
 
       {/* Productos del carro */}
-      <div className="flex flex-col gap-3 px-4 pt-4 pb-[24px]">
-        {cart.items.length === 0 && <p className="text-center text-xs text-neutro-8">Tu carro está vacío.</p>}
+      <div className="flex flex-col gap-2 px-4 pt-4 pb-[24px]">
+        <div className="flex justify-end">
+          <button
+            type="button"
+            onClick={() => setVaciarModalVisible(true)}
+            className="tap-scale flex items-center gap-1 text-[12px] text-brand"
+          >
+            Vaciar carro
+            <CartIcon className="h-4 w-4" />
+          </button>
+        </div>
+        <div className="flex flex-col gap-3">
         {cart.items.map((item) => {
           const ripenessOptions = item.ripeness ? RIPENESS_OPTIONS[item.id] : undefined;
           const disabled = isItemDisabled(item);
@@ -204,6 +254,7 @@ export default function CarroPage() {
             </div>
           );
         })}
+        </div>
       </div>
 
       <div
@@ -327,6 +378,42 @@ export default function CarroPage() {
           </button>
         )}
       </div>
+
+      {vaciarModalVisible && (
+        <div className="fixed inset-0 z-30 mx-auto flex w-full max-w-[430px] items-end">
+          <button type="button" aria-label="Cerrar" onClick={closeVaciarModal} className="absolute inset-0 bg-black/40" />
+          <div
+            className="relative flex w-full flex-col items-center gap-4 rounded-t-[30px] bg-white pt-2 pb-8"
+            style={{
+              animation: `${vaciarModalClosing ? "sheet-slide-down" : "sheet-slide-up"} ${MODAL_TRANSITION_MS}ms cubic-bezier(0.2, 0.9, 0.3, 1) forwards`,
+            }}
+          >
+            <div className="h-[5px] w-[134px] shrink-0 rounded-full bg-[#232321]" />
+            <div className="flex w-full flex-col items-center gap-4 px-6">
+              <div className="flex flex-col items-center gap-1 text-center">
+                <p className="text-[14px] font-bold text-black">Vaciar Carro</p>
+                <p className="text-[12px] text-black">¿Quieres eliminar todos los productos de tu carro?</p>
+              </div>
+              <div className="flex w-full flex-col gap-2">
+                <button
+                  type="button"
+                  onClick={handleVaciarCarro}
+                  className="tap-scale flex w-full items-center justify-center rounded-full bg-brand px-4 py-2.5 text-base font-medium text-brand-1 shadow-sm"
+                >
+                  Vaciar Carro
+                </button>
+                <button
+                  type="button"
+                  onClick={closeVaciarModal}
+                  className="tap-scale flex w-full items-center justify-center rounded-full border border-brand px-4 py-2.5 text-base font-medium text-brand"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
