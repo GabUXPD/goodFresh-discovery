@@ -56,7 +56,7 @@ export default function CompraExitosaPage() {
         </div>
       </div>
 
-      <div className="flex w-full flex-1 flex-col items-center justify-center gap-8 rounded-t-[75px] bg-white px-4 pt-[48px] pb-8">
+      <div className="flex w-full flex-1 flex-col items-center justify-start gap-8 rounded-t-[75px] bg-white px-4 pt-[16px] pb-8">
       <div className="flex w-full flex-col items-center">
         <p className="text-center text-[20px] font-extrabold text-[#232321]">¡Tu pedido se está armando!</p>
         <div className="flex items-center gap-4">
