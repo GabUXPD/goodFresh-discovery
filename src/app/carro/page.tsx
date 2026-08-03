@@ -343,13 +343,13 @@ export default function CarroPage() {
             Total a pagar
           </p>
           {hasFreeShipping ? (
-            <div className="flex items-center gap-1">
-              <span className="flex items-center gap-1 rounded-full bg-aqua-3 px-2 py-0.5 text-[10px] text-black">
-                🥳 ¡Ya tienes el envío gratis!
-              </span>
+            <div className="flex flex-col items-end gap-1">
               <p className="text-base font-semibold" style={{ color: CART_PINK }}>
                 {formatPrice(availableTotal)}
               </p>
+              <span className="flex items-center gap-1 rounded-full bg-aqua-3 px-2 py-0.5 text-[10px] text-black">
+                🥳 ¡Ya tienes el envío gratis!
+              </span>
             </div>
           ) : (
             <div className="flex flex-col items-end">
