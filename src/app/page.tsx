@@ -79,12 +79,9 @@ export default function TiendaGoodFreshPage() {
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2">
               <h1 className="text-xl font-semibold text-ink-9">GoodFresh</h1>
-              <div className="flex flex-col justify-center rounded-br-[16px] bg-white py-0.5">
-                <div className="flex items-center gap-1">
-                  <LeafIcon className="h-3 w-3 text-[#22b573]" />
-                  <p className="text-xs font-semibold whitespace-nowrap text-[#22b573]">100% frescos</p>
-                </div>
-                <p className="text-[8px] tracking-[0.4px] whitespace-nowrap text-neutro-9 uppercase">Calidad garantizada</p>
+              <div className="flex items-center gap-1 rounded-br-[16px] bg-white py-0.5">
+                <LeafIcon className="h-3 w-3 text-[#22b573]" />
+                <p className="text-[14px] font-semibold whitespace-nowrap text-[#22b573]">100% frescos</p>
               </div>
             </div>
 
@@ -96,6 +93,7 @@ export default function TiendaGoodFreshPage() {
                 <span className="font-bold" style={{ lineHeight: 1.5 }}>
                   a precios convenientes
                 </span>
+                <span style={{ lineHeight: 1.5 }}> y de calidad</span>
               </p>
             </div>
           </div>
