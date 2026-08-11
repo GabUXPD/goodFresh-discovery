@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { BellIcon, ChevronLeftIcon } from "./icons";
 import { HeaderCartButton } from "./HeaderCartButton";
 
@@ -26,13 +27,13 @@ export function StoreHeader() {
         isScrolled ? "bg-white" : "bg-transparent"
       }`}
     >
-      <button
-        type="button"
+      <Link
+        href="/"
         aria-label="Volver"
         className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-ink-9 shadow-sm"
       >
         <ChevronLeftIcon className="h-5 w-5" />
-      </button>
+      </Link>
       <div className="flex items-center gap-2">
         <button
           type="button"

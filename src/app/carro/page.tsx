@@ -46,7 +46,7 @@ export default function CarroPage() {
   // frutas" o "Caja completa"), se vuelve a esa misma caja. Si los productos
   // vienen solo de "O elige producto a producto" en la tienda (sin caja
   // activa), se vuelve a esa sección en vez de abrir/rearmar una caja.
-  const boxHref = cart.activeBoxId ? `/${cart.activeBoxId}` : "/#producto-a-producto";
+  const boxHref = cart.activeBoxId ? `/${cart.activeBoxId}` : "/tienda-goodfresh#producto-a-producto";
 
   // Sin stock (viene de "Repite tu compra"): queda deshabilitado de forma
   // permanente, sin poder reactivarse desde el carro.
@@ -119,7 +119,7 @@ export default function CarroPage() {
       <main className="flex flex-1 flex-col">
         <div className="flex w-full items-center gap-1 bg-white px-3 pt-3 pb-2">
           <Link
-            href="/#producto-a-producto"
+            href="/tienda-goodfresh#producto-a-producto"
             aria-label="Volver"
             className="flex h-10 w-10 items-center justify-center rounded-full text-ink-9"
           >
@@ -291,7 +291,7 @@ export default function CarroPage() {
               </div>
             )}
             <Link
-              href="/#producto-a-producto"
+              href="/tienda-goodfresh#producto-a-producto"
               className="tap-scale mb-2 flex w-full items-center justify-center rounded-full border border-brand bg-white px-3 py-[11px] text-[14px] leading-[1.5] font-medium whitespace-nowrap text-brand shadow-sm"
             >
               Agregar más productos
@@ -362,7 +362,7 @@ export default function CarroPage() {
         </div>
         {isBelowMinimum ? (
           <Link
-            href="/#producto-a-producto"
+            href="/tienda-goodfresh#producto-a-producto"
             className="tap-scale flex w-full items-center justify-center rounded-full border border-brand bg-white px-6 py-4 text-[14px] leading-[1.5] font-bold whitespace-nowrap text-brand"
           >
             Agregar productos
