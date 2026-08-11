@@ -7,7 +7,10 @@
 
 Para promover la nueva tienda GoodFresh dentro de GoodMeal, se agrega un modal con una calculadora de ahorro familiar. El usuario ingresa (1) cuántas personas viven en su hogar y (2) cuánto gasta al mes en frutas y verduras, y la calculadora muestra cuánto ahorraría comprando en GoodFresh en vez de en el supermercado, mensual y anualmente. Un botón final lleva al usuario a la tienda GoodFresh.
 
-**Fuente de diseño:** Figma "Nuevos negocios" (file key `No0ugJttymp2LrbsboaGvW`), nodo `1026:5338` ("Calculadora de ahorro familiar"). El prototipo de Figma solo tiene wireada la pantalla de entrada de datos — no tiene conectada ninguna transición al estado de resultado, así que ese estado se diseña en este documento siguiendo el lenguaje visual ya validado en `compra-exitosa` (cards de ahorro).
+**Fuente de diseño:** Figma "Nuevos negocios" (file key `No0ugJttymp2LrbsboaGvW`):
+- Nodo `1026:5338` — estado inicial del modal (formulario vacío).
+- Nodo `1026:6559` — formulario con datos ingresados (4 personas, $100.000/mes).
+- Nodo `1028:8654` — estado de resultado, confirmado en Figma: se agrega como una **segunda card debajo de la card del formulario** (el formulario no se oculta ni se reemplaza; el usuario puede seguir ajustando sus datos y volver a calcular).
 
 **Restricción de alcance descubierta:** este repo no tiene implementado el home de GoodMeal (buscador, categorías, marcas populares, restaurantes) que aparece en el Figma como punto de entrada al modal — solo tiene la tienda GoodFresh. Se construye un home mínimo como parte de este trabajo.
 
@@ -53,15 +56,18 @@ Estructura (de arriba hacia abajo):
 
 ## 5. Modal — estado de resultado
 
-Al tocar "Calcular mi ahorro" con ambos campos completos, el contenido de la card blanca cambia (sin nueva navegación ni nuevo modal) a:
+Confirmado contra el nodo de Figma `1028:8654`: al tocar "Calcular mi ahorro" con ambos campos completos, **se agrega una segunda card verde debajo de la card blanca del formulario** (el formulario sigue visible y editable — no hay transición ni se oculta nada). Si el usuario cambia los datos y vuelve a tocar "Calcular mi ahorro", la card de resultado se actualiza con los nuevos valores.
 
-- Reutiliza el patrón visual de las cards de ahorro de `compra-exitosa` (fondo verde clarito `#ebfaf3`, `rounded-xl`, ícono flotante, monto grande en `text-[20px] font-extrabold`).
-- Dos cifras:
-  - **Ahorro mensual** (monto ingresado × markup, ver sección 6).
-  - **Ahorro anual** (ahorro mensual × 12).
-- Línea de contexto con la cantidad de integrantes seleccionada, ej.: "Para tu familia de {n} personas" (si "6+", el copy dice "6 o más personas").
-- Botón final **"Empieza a ahorrar hoy"** (rosa, full width) → cierra el modal y navega a `/tienda-goodfresh`.
-- Debe existir una forma de volver al paso 1 (ej. botón "Volver a calcular" o el mismo X) — a definir en el plan de implementación, no bloquea el diseño.
+Contenido de la card de resultado (fondo verde, `rounded-xl`, sigue el lenguaje visual de las cards de ahorro de `compra-exitosa`):
+
+- Header: logo/ícono circular de GoodFresh + texto "Con GoodFresh, te podrías ahorrar".
+- Cifra destacada: **ahorro anual** en grande y bold (ej. "$216.000 al año").
+- Fila con dos columnas:
+  - "Ahorro mensual" + monto (ahorro mensual, ver sección 6).
+  - "Integrantes" + cantidad de personas seleccionada en el paso 1 (si "6+", se muestra "6+").
+- Botón final **"Empieza ahorrar hoy"** (fondo blanco, texto verde, full width, como en el Figma) → cierra el modal y navega a `/tienda-goodfresh`.
+
+No se necesita botón de "volver" separado: como el formulario permanece visible arriba, el usuario simplemente edita y vuelve a calcular.
 
 ## 6. Lógica de cálculo
 
@@ -77,7 +83,9 @@ ahorroMensual = max(jumboPrice, liderPrice) - montoIngresado
 ahorroAnual   = ahorroMensual * 12
 ```
 
-Esto mantiene el mismo mensaje de "ahorro vs. supermercado" usado en el resto de la app. La cantidad de personas del hogar **no participa en el cálculo numérico** — el monto mensual ya declarado por el usuario es la base completa del cálculo. La cantidad de personas solo personaliza el copy del resultado (según lo especificado por el usuario).
+Esto mantiene el mismo mensaje de "ahorro vs. supermercado" usado en el resto de la app. La cantidad de personas del hogar **no participa en el cálculo numérico** — el monto mensual ya declarado por el usuario es la base completa del cálculo. La cantidad de personas solo personaliza el dato "Integrantes" en la card de resultado.
+
+**Nota:** el único ejemplo numérico visible en Figma (nodo `1028:8654`: $100.000/mes → ahorro mensual $18.000) implica un 18% flat, no el 30%/24% de esta fórmula. Decisión explícita del usuario: priorizar consistencia con `compra-exitosa` sobre calzar exacto con el número de ejemplo del mockup.
 
 ## 7. Fuera de alcance
 
