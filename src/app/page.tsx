@@ -143,10 +143,10 @@ export default function GoodMealHomePage() {
       </div>
 
       {calculatorOpen && (
-        <div className="fixed inset-0 z-30 mx-auto flex w-full max-w-[430px] items-end">
+        <div className="fixed inset-0 z-30 mx-auto flex w-full max-w-[430px] items-center">
           <button type="button" aria-label="Cerrar" onClick={closeCalculator} className="absolute inset-0 bg-black/40" />
           <div
-            className="relative flex max-h-[92vh] w-full flex-col overflow-y-auto rounded-t-[30px] bg-green-1"
+            className="relative mx-[15px] flex max-h-[92vh] flex-1 flex-col overflow-y-auto rounded-[30px] bg-green-1"
             style={{
               animation: `${calculatorClosing ? "sheet-slide-down" : "sheet-slide-up"} ${MODAL_TRANSITION_MS}ms cubic-bezier(0.2, 0.9, 0.3, 1) forwards`,
             }}
@@ -164,7 +164,7 @@ export default function GoodMealHomePage() {
             </div>
 
             <div className="flex flex-col gap-4 px-4 pt-4 pb-6">
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col items-center gap-1 text-center">
                 <p className="text-lg font-bold text-ink-9">Ahorra en tu compra de frutas y verduras</p>
                 <div className="flex items-center gap-1 text-sm">
                   <LeafIcon className="h-4 w-4 text-[#22b573]" />
@@ -227,12 +227,14 @@ export default function GoodMealHomePage() {
               {showResult && (
                 <div className="flex flex-col gap-4 rounded-2xl bg-[#22b573] p-4">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-[1.5px] border-neutro-5 bg-white">
-                      <Image src="/images/goodFresh-logo.png" alt="" width={30} height={30} className="object-contain" />
+                    <div className="flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-full">
+                      <Image src="/images/goodFresh-logo.png" alt="" width={52} height={52} className="object-contain" />
                     </div>
                     <div className="flex flex-1 flex-col">
-                      <p className="text-sm text-white/90">Con GoodFresh, te podrías ahorrar</p>
-                      <p className="text-2xl font-extrabold text-white">{formatPrice(savings.annual)} al año</p>
+                      <p className="text-sm font-semibold text-white/90">Con GoodFresh, te podrías ahorrar</p>
+                      <p className="text-2xl font-extrabold text-white">
+                        {formatPrice(savings.annual)} <span className="text-sm font-semibold">al año</span>
+                      </p>
                     </div>
                   </div>
 
