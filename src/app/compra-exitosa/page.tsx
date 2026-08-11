@@ -39,7 +39,7 @@ export default function CompraExitosaPage() {
   function handleSeguirComprando() {
     cart.setItems([]);
     cart.setActiveBoxId(null);
-    router.push("/");
+    router.push("/tienda-goodfresh");
   }
 
   return (

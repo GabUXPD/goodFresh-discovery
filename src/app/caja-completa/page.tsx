@@ -157,7 +157,7 @@ export default function CajaCompletaPage() {
       {/* Header */}
       <div className="fixed inset-x-0 top-0 z-20 mx-auto flex w-full max-w-[430px] items-center justify-between bg-white px-3 py-3">
         <Link
-          href="/"
+          href="/tienda-goodfresh"
           aria-label="Volver"
           className="flex h-10 w-10 items-center justify-center rounded-full text-ink-9"
         >
@@ -380,7 +380,7 @@ export default function CajaCompletaPage() {
         </div>
         <div className="flex items-center gap-4">
           <Link
-            href="/"
+            href="/tienda-goodfresh"
             className="tap-scale flex flex-1 items-center justify-center rounded-full border border-brand px-5 py-3 text-[14px] leading-[1.5] font-medium text-brand"
           >
             Seguir comprando

@@ -42,7 +42,7 @@ export default function MiOrdenPage() {
   function handleVolver() {
     cart.setItems([]);
     cart.setActiveBoxId(null);
-    router.push("/");
+    router.push("/tienda-goodfresh");
   }
 
   return (
