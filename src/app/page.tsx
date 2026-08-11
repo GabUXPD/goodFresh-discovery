@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   ChevronDownIcon,
   SearchIcon,
@@ -49,6 +50,7 @@ function calculateSavings(monthlySpend: number) {
 }
 
 export default function GoodMealHomePage() {
+  const router = useRouter();
   const [calculatorOpen, setCalculatorOpen] = useState(false);
   const [calculatorClosing, setCalculatorClosing] = useState(false);
   const [householdSize, setHouseholdSize] = useState<HouseholdSize | null>(null);
@@ -238,6 +240,17 @@ export default function GoodMealHomePage() {
                       <p className="text-lg font-bold text-ink-9">{householdSize}</p>
                     </div>
                   </div>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      closeCalculator();
+                      router.push("/tienda-goodfresh");
+                    }}
+                    className="tap-scale flex w-full items-center justify-center rounded-full bg-white px-4 py-3 text-base font-medium text-[#22b573]"
+                  >
+                    Empieza ahorrar hoy
+                  </button>
                 </div>
               )}
             </div>
