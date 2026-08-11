@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   ChevronDownIcon,
@@ -31,6 +31,7 @@ type HouseholdSize = (typeof HOUSEHOLD_SIZES)[number];
 const JUMBO_MARKUP = 0.3;
 const LIDER_MARKUP = 0.24;
 const MODAL_TRANSITION_MS = 300;
+const AUTO_OPEN_DELAY_MS = 2000;
 
 function formatPrice(value: number) {
   return `$${new Intl.NumberFormat("es-CL").format(value)}`;
@@ -65,6 +66,11 @@ export default function GoodMealHomePage() {
     setCalculatorOpen(true);
     setCalculatorClosing(false);
   }
+
+  useEffect(() => {
+    const timer = setTimeout(openCalculator, AUTO_OPEN_DELAY_MS);
+    return () => clearTimeout(timer);
+  }, []);
 
   function closeCalculator() {
     setCalculatorClosing(true);
@@ -221,7 +227,7 @@ export default function GoodMealHomePage() {
               {showResult && (
                 <div className="flex flex-col gap-4 rounded-2xl bg-[#22b573] p-4">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-[1.5px] border-neutro-5 bg-white">
                       <Image src="/images/goodFresh-logo.png" alt="" width={30} height={30} className="object-contain" />
                     </div>
                     <div className="flex flex-1 flex-col">
