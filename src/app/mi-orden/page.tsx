@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ChevronLeftIcon } from "@/components/icons";
 import { useCart } from "@/context/CartContext";
+import { OrderFeedbackModal } from "@/components/OrderFeedbackModal";
 
 // Contenido y estructura verificados contra el nodo de Figma "Orden pro
 // despachar" (node-id 535-5299, archivo "Nuevos negocios"). El listado de
@@ -30,6 +31,13 @@ export default function MiOrdenPage() {
   const router = useRouter();
   const order = cart.lastOrder ?? [];
   const [orderNumber] = useState(() => Math.floor(100000 + Math.random() * 900000));
+  const [delivered, setDelivered] = useState(false);
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
+
+  function handleSimularEntrega() {
+    setDelivered(true);
+    setFeedbackOpen(true);
+  }
 
   const [today] = useState(() => new Date());
   const deliveryDate = new Date(today.getTime() + 24 * 60 * 60 * 1000);
@@ -60,24 +68,30 @@ export default function MiOrdenPage() {
       </div>
 
       <div className="relative mt-4 overflow-hidden rounded-2xl bg-white shadow-[0px_4px_4px_0px_rgba(0,0,0,0.1)]">
-        <div className="absolute top-0 right-0 rounded-bl-2xl rounded-br-2xl bg-[#ff18a6] px-3 py-1 text-[12px] font-medium text-white">
-          Por Despachar
+        <div
+          className={`absolute top-0 right-0 rounded-bl-2xl rounded-br-2xl px-3 py-1 text-[12px] font-medium text-white ${
+            delivered ? "bg-green-5" : "bg-[#ff18a6]"
+          }`}
+        >
+          {delivered ? "Entregada" : "Por Entregar"}
         </div>
 
         <div className="flex flex-col gap-1 px-4 pt-9 pb-3">
           <p className="text-[18px] font-semibold text-[#323740]">GoodFresh</p>
           <p className="text-[12px] text-black">
-            <span className="font-medium">Fecha de compra:</span> {formatDate(today)}
+            <span className="font-medium">Fecha de compra:</span>{" "}
+            <span suppressHydrationWarning>{formatDate(today)}</span>
           </p>
           <p className="text-[12px] text-black">
-            <span className="font-medium">Fecha de entrega:</span> {formatDate(deliveryDate)}
+            <span className="font-medium">Fecha de entrega:</span>{" "}
+            <span suppressHydrationWarning>{formatDate(deliveryDate)}</span>
           </p>
           <div className="flex items-center gap-2 text-[12px] text-black">
             <span className="font-medium">Delivery:</span>
             <span className="flex items-center rounded-full bg-brand-1 px-2.5 text-[12px] font-medium text-brand">10:30 a 15:30</span>
           </div>
           <p className="text-[12px] text-black">
-            <span className="font-medium">Nº de orden:</span> {orderNumber}
+            <span className="font-medium">Nº de orden:</span> <span suppressHydrationWarning>{orderNumber}</span>
           </p>
         </div>
 
@@ -134,16 +148,43 @@ export default function MiOrdenPage() {
         </div>
       </div>
 
-      <div className="mt-4 flex flex-col items-center gap-2 rounded-2xl bg-white px-2 py-4 shadow-[0px_1px_3px_-1px_rgba(0,0,0,0.15),0px_4px_6px_-1px_rgba(0,0,0,0.1)]">
-        <p className="text-center text-[14px] font-semibold text-[#3c444f]">
+      <div className="mt-4 flex flex-col items-center gap-2 rounded-2xl bg-[#ffe79b] px-2 py-4 shadow-[0px_1px_3px_-1px_rgba(0,0,0,0.15),0px_4px_6px_-1px_rgba(0,0,0,0.1)]">
+        <p className="text-center text-[14px] font-semibold text-black">
           Devuelve la caja en tu próximo pedido: al repartidor o déjala en conserjería.
         </p>
         <div className="relative h-[176px] w-[241px]">
-          <Image src="/images/recuerda-devolver-caja2.png" alt="Recuerda devolver tu caja" fill className="object-contain" />
+          <Image
+            src="/images/recuerda-devolver-caja2-black.png"
+            alt="Recuerda devolver tu caja"
+            fill
+            className="object-contain"
+          />
         </div>
       </div>
 
       <p className="mt-8 cursor-pointer text-center text-[14px] font-semibold text-brand">Ayuda con mi pedido activo</p>
+
+      {!delivered && (
+        <button
+          type="button"
+          onClick={handleSimularEntrega}
+          className="mt-4 cursor-pointer text-center text-[12px] font-medium text-neutro-8 underline"
+        >
+          Simular entrega (demo)
+        </button>
+      )}
+
+      {delivered && (
+        <button
+          type="button"
+          onClick={() => setFeedbackOpen(true)}
+          className="tap-scale mt-4 flex w-full items-center justify-center rounded-full border border-dashed border-neutro-7 px-4 py-3 text-sm font-semibold text-ink-9"
+        >
+          Dar Feedback
+        </button>
+      )}
+
+      <OrderFeedbackModal open={feedbackOpen} onClose={() => setFeedbackOpen(false)} products={order} />
     </main>
   );
 }
