@@ -15,11 +15,11 @@ type TagConfig = {
   id: string;
   label: string;
   followUp?: FollowUp;
+  /** "auto" = crédito/reembolso instantáneo; "support" = se deriva a soporte con evidencia; sin definir = mensaje genérico */
+  resolutionRoute?: "auto" | "support";
 };
 
 type RatingConfig = {
-  label: string;
-  reaction: string;
   question: string;
   hint: string;
   defaultPlaceholder: string;
@@ -31,22 +31,26 @@ const PRODUCT_TAGS_1: TagConfig[] = [
     id: "faltaron",
     label: "Faltaron productos",
     followUp: { type: "products", question: "¿Qué productos te faltaron?", hint: "Selecciona de tu pedido los que no te llegaron" },
+    resolutionRoute: "auto",
   },
   {
     id: "no-elegido",
     label: "Llegó algo que no elegí",
     followUp: { type: "text", placeholder: "¿Qué producto te llegó que no elegiste?" },
+    resolutionRoute: "support",
   },
   { id: "fuera-horario", label: "Llegó fuera de horario", followUp: { type: "text" } },
   {
     id: "mal-estado",
     label: "Productos en mal estado",
     followUp: { type: "products", question: "¿Qué productos te llegaron así?", hint: "Selecciona de tu pedido los que correspondan" },
+    resolutionRoute: "auto",
   },
   {
     id: "muy-verdes",
     label: "Muy verdes o muy maduros",
     followUp: { type: "products", question: "¿Qué productos te llegaron así?", hint: "Selecciona de tu pedido los que correspondan" },
+    resolutionRoute: "support",
   },
   { id: "otro", label: "Otro", followUp: { type: "text" } },
 ];
@@ -56,16 +60,19 @@ const PRODUCT_TAGS_3: TagConfig[] = [
     id: "frescura",
     label: "Frescura de algunos productos",
     followUp: { type: "products", question: "¿A que productos?", hint: "Selecciona de tu pedido los que correspondan" },
+    resolutionRoute: "support",
   },
   {
     id: "madurez",
     label: "Punto de madurez",
     followUp: { type: "products", question: "¿A que productos?", hint: "Selecciona de tu pedido los que correspondan" },
+    resolutionRoute: "support",
   },
   {
     id: "tamano",
     label: "Tamaño de los productos",
     followUp: { type: "products", question: "¿A que productos?", hint: "Selecciona de tu pedido los que correspondan" },
+    resolutionRoute: "support",
   },
   { id: "horario", label: "Horario de entrega", followUp: { type: "text" } },
   { id: "empacado", label: "Cómo llegó empacado", followUp: { type: "text" } },
@@ -74,40 +81,30 @@ const PRODUCT_TAGS_3: TagConfig[] = [
 
 const RATING_CONFIG: Record<number, RatingConfig> = {
   1: {
-    label: "Muy malo",
-    reaction: "Lamentamos que no haya salido bien",
     question: "¿Qué pasó?",
     hint: "Puedes elegir más de una",
     defaultPlaceholder: "Cuéntanos qué pasó (opcional)",
     tags: PRODUCT_TAGS_1,
   },
   2: {
-    label: "Malo",
-    reaction: "Sentimos que no fuera lo que esperabas",
     question: "¿Qué falló?",
     hint: "Puedes elegir más de una",
     defaultPlaceholder: "Cuéntanos qué pasó (opcional)",
     tags: PRODUCT_TAGS_1,
   },
   3: {
-    label: "Regular",
-    reaction: "Gracias por contarnos",
     question: "¿Qué mejorarías?",
     hint: "Puedes elegir más de una",
     defaultPlaceholder: "¿Algo más que contarnos? (opcional)",
     tags: PRODUCT_TAGS_3,
   },
   4: {
-    label: "Bueno",
-    reaction: "¡Qué bueno!",
     question: "¿Qué le faltó para ser perfecto?",
     hint: "Puedes elegir más de una",
     defaultPlaceholder: "¿Algo más que contarnos? (opcional)",
     tags: [...PRODUCT_TAGS_3, { id: "nada", label: "Nada, estuvo muy bien" }],
   },
   5: {
-    label: "Excelente",
-    reaction: "¡Nos alegramos!",
     question: "¿Qué destacarías?",
     hint: "Opcional · puedes elegir más de una",
     defaultPlaceholder: "¿Algo más que contarnos? (opcional)",
@@ -122,13 +119,18 @@ const RATING_CONFIG: Record<number, RatingConfig> = {
   },
 };
 
-type Step = "rating" | "photo";
+type Step = "rating" | "resolution" | "photo";
+type ResolutionChoice = "credit" | "refund";
 
 type OrderFeedbackModalProps = {
   open: boolean;
   onClose: () => void;
   products: CartItem[];
 };
+
+function formatPrice(value: number) {
+  return `$${new Intl.NumberFormat("es-CL").format(value)}`;
+}
 
 function ProductChecklist({
   question,
@@ -184,6 +186,8 @@ export function OrderFeedbackModal({ open, onClose, products }: OrderFeedbackMod
   const [comment, setComment] = useState("");
   const [lastTextTagId, setLastTextTagId] = useState<string | null>(null);
   const [lastProductTagId, setLastProductTagId] = useState<string | null>(null);
+  const [resolutionChoice, setResolutionChoice] = useState<ResolutionChoice | null>(null);
+  const [resolutionConfirmed, setResolutionConfirmed] = useState(false);
 
   if (!open) return null;
 
@@ -197,6 +201,8 @@ export function OrderFeedbackModal({ open, onClose, products }: OrderFeedbackMod
     setComment("");
     setLastTextTagId(null);
     setLastProductTagId(null);
+    setResolutionChoice(null);
+    setResolutionConfirmed(false);
   }
 
   function requestClose() {
@@ -246,9 +252,19 @@ export function OrderFeedbackModal({ open, onClose, products }: OrderFeedbackMod
   const hasPendingProductSelection = activeProductTags.length > 0 && checkedProducts.size === 0;
   const canSubmit = rating > 0 && !hasPendingProductSelection;
 
+  const affectedProducts = products.filter((product) => checkedProducts.has(product.id));
+  const affectedAmount = affectedProducts.reduce((sum, product) => sum + product.price * product.quantity, 0);
+
+  const selectedConfigTags = config?.tags.filter((tag) => selectedTags.has(tag.id)) ?? [];
+  const resolutionRoute: "auto" | "support" | "generic" = selectedConfigTags.some((tag) => tag.resolutionRoute === "support")
+    ? "support"
+    : selectedConfigTags.some((tag) => tag.resolutionRoute === "auto") && affectedAmount > 0
+      ? "auto"
+      : "generic";
+
   function handleSubmit() {
     if (!canSubmit) return;
-    setStep("photo");
+    setStep(rating >= 4 ? "photo" : "resolution");
   }
 
   return (
@@ -265,7 +281,10 @@ export function OrderFeedbackModal({ open, onClose, products }: OrderFeedbackMod
         {step === "rating" && (
           <>
             <div className="flex w-full flex-col items-center gap-4 overflow-y-auto px-4 pt-4 pb-4">
-              <p className="text-center text-base font-semibold text-ink-9">¿Cómo estuvo tu pedido de GoodFresh?</p>
+              <div className="flex flex-col items-center gap-0.5">
+                <p className="text-center text-base font-semibold text-ink-9">¿Cómo estuvo tu pedido?</p>
+                <p className="text-center text-xs text-neutro-9">Tienes 24 horas desde la entrega para contarnos</p>
+              </div>
 
               <div className="flex flex-col items-center gap-2">
                 <div className="flex gap-2">
@@ -275,13 +294,12 @@ export function OrderFeedbackModal({ open, onClose, products }: OrderFeedbackMod
                     </button>
                   ))}
                 </div>
-                <p className="text-xs font-medium text-neutro-9">{config ? config.label : "Toca una estrella para calificar"}</p>
+                {rating === 0 && <p className="text-xs font-medium text-neutro-9">Toca una estrella para calificar</p>}
               </div>
 
               {config && (
                 <>
                   <div className="flex w-full flex-col items-center gap-1 text-center">
-                    <p className="text-sm text-ink-5">{config.reaction}</p>
                     <p className="text-base font-semibold text-ink-9">{config.question}</p>
                     <p className="text-xs text-neutro-9">{config.hint}</p>
                   </div>
@@ -336,6 +354,163 @@ export function OrderFeedbackModal({ open, onClose, products }: OrderFeedbackMod
               </button>
             </div>
           </>
+        )}
+
+        {step === "resolution" && (
+          <div className="flex w-full flex-col items-center gap-6 overflow-y-auto px-4 pt-4 pb-4">
+            {resolutionRoute === "generic" && (
+              <>
+                <div className="flex w-full flex-col items-center gap-2 pt-6 text-center">
+                  <p className="text-base font-semibold text-ink-9">Gracias por avisarnos</p>
+                  <p className="text-sm text-ink-5">Tomamos nota de tu comentario para mejorar tu próxima entrega.</p>
+                </div>
+                <div className="flex w-full gap-2">
+                  <button
+                    type="button"
+                    onClick={requestClose}
+                    className="tap-scale flex flex-1 items-center justify-center rounded-full border border-brand px-6 py-4 text-base font-medium text-brand"
+                  >
+                    Hablar con soporte
+                  </button>
+                  <button
+                    type="button"
+                    onClick={requestClose}
+                    className="tap-scale flex flex-1 items-center justify-center rounded-full bg-brand px-6 py-4 text-base font-medium text-white shadow-sm"
+                  >
+                    Entendido
+                  </button>
+                </div>
+              </>
+            )}
+
+            {resolutionRoute === "auto" &&
+              (!resolutionConfirmed ? (
+                <>
+                  <div className="flex w-full flex-col items-center gap-2 text-center">
+                    <p className="text-base font-semibold text-ink-9">Identificamos un problema con:</p>
+                    <div className="flex flex-col items-center gap-0.5">
+                      {affectedProducts.map((product) => (
+                        <p key={product.id} className="text-sm text-ink-5">
+                          {product.quantity} {product.name} - {product.unit}
+                        </p>
+                      ))}
+                    </div>
+                    <p className="text-2xl font-bold text-brand">{formatPrice(affectedAmount)}</p>
+                  </div>
+
+                  <p className="text-sm font-semibold text-ink-9">¿Cómo prefieres que lo resolvamos?</p>
+
+                  <div className="flex w-full flex-col gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setResolutionChoice("credit")}
+                      className={`flex w-full flex-col items-start gap-0.5 rounded-2xl border px-4 py-3 text-left ${
+                        resolutionChoice === "credit" ? "border-brand bg-brand-1" : "border-neutro-5 bg-white"
+                      }`}
+                    >
+                      <p className="text-sm font-semibold text-ink-9">Crédito GoodClub</p>
+                      <p className="text-xs text-neutro-9">Disponible al instante para tu próxima compra</p>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setResolutionChoice("refund")}
+                      className={`flex w-full flex-col items-start gap-0.5 rounded-2xl border px-4 py-3 text-left ${
+                        resolutionChoice === "refund" ? "border-brand bg-brand-1" : "border-neutro-5 bg-white"
+                      }`}
+                    >
+                      <p className="text-sm font-semibold text-ink-9">Reembolso a tu medio de pago</p>
+                      <p className="text-xs text-neutro-9">Hasta 5 días hábiles</p>
+                    </button>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setResolutionConfirmed(true)}
+                    disabled={!resolutionChoice}
+                    className="tap-scale flex w-full items-center justify-center rounded-full bg-brand px-4 py-3 text-base font-medium text-white shadow-sm disabled:bg-neutro-3 disabled:text-[#979797] disabled:shadow-none"
+                  >
+                    Confirmar
+                  </button>
+                </>
+              ) : (
+                <>
+                  <div className="flex w-full flex-col items-center gap-2 pt-6 text-center">
+                    <p className="text-2xl font-bold text-ink-9">¡Listo! 🎉</p>
+                    <p className="text-sm text-ink-5">
+                      {resolutionChoice === "credit"
+                        ? `Agregamos ${formatPrice(affectedAmount)} a tu saldo GoodClub.`
+                        : `Tu reembolso de ${formatPrice(affectedAmount)} está en camino, lo verás reflejado en máximo 5 días hábiles.`}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={requestClose}
+                    className="tap-scale flex w-full items-center justify-center rounded-full bg-brand px-4 py-3 text-base font-medium text-white shadow-sm"
+                  >
+                    Entendido
+                  </button>
+                </>
+              ))}
+
+            {resolutionRoute === "support" &&
+              (!resolutionConfirmed ? (
+                <>
+                  <div className="flex w-full flex-col items-center gap-2 text-center">
+                    <p className="text-base font-semibold text-ink-9">Ayúdanos a revisar tu caso</p>
+                    <p className="text-sm text-ink-5">Una foto nos ayuda a validar tu reclamo más rápido (opcional).</p>
+                  </div>
+
+                  <div className="flex w-full flex-col items-center gap-2 pb-1">
+                    <div className="relative h-[173px] w-[288px]">
+                      <Image src="/images/goodclub-photo-frame.png" alt="" fill className="object-contain" />
+                    </div>
+                    <div className="flex flex-col items-center gap-1 text-center text-xs text-brand">
+                      <p className="font-semibold">📸 Muestra claramente el problema (madurez, tamaño, etc.)</p>
+                      <p>🏷️ Si es posible, incluye la etiqueta o precio</p>
+                    </div>
+                  </div>
+
+                  <div className="flex w-full gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setResolutionConfirmed(true)}
+                      className="tap-scale flex flex-1 items-center justify-center rounded-full border border-brand px-6 py-4 text-base font-medium text-brand"
+                    >
+                      Continuar sin foto
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setResolutionConfirmed(true)}
+                      className="tap-scale flex flex-1 items-center justify-center rounded-full bg-brand px-6 py-4 text-base font-medium text-brand-1 shadow-sm"
+                    >
+                      Subir foto
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="flex w-full flex-col items-center gap-2 pt-6 text-center">
+                    <p className="text-2xl font-bold text-ink-9">¡Caso enviado! 📩</p>
+                    <p className="text-sm text-ink-5">
+                      Enviamos tu caso a soporte GoodClub. Te contactaremos dentro de las próximas 24 horas con una solución.
+                    </p>
+                    {affectedAmount > 0 && (
+                      <p className="text-sm text-ink-5">
+                        Ya identificamos {formatPrice(affectedAmount)} en productos reportados — lo confirmaremos junto con el resto de tu
+                        caso.
+                      </p>
+                    )}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={requestClose}
+                    className="tap-scale flex w-full items-center justify-center rounded-full bg-brand px-4 py-3 text-base font-medium text-white shadow-sm"
+                  >
+                    Entendido
+                  </button>
+                </>
+              ))}
+          </div>
         )}
 
         {step === "photo" && (
