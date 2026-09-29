@@ -551,14 +551,14 @@ export function OrderFeedbackModal({ open, onClose, products }: OrderFeedbackMod
               <button
                 type="button"
                 onClick={requestClose}
-                className="tap-scale flex flex-1 items-center justify-center rounded-full border border-brand px-6 py-4 text-base font-medium text-brand"
+                className="tap-scale flex flex-1 items-center justify-center rounded-full border border-brand px-2.5 py-4 text-base font-medium text-brand"
               >
                 Subir más tarde
               </button>
               <button
                 type="button"
                 onClick={requestClose}
-                className="tap-scale flex flex-1 items-center justify-center rounded-full bg-brand px-6 py-4 text-base font-medium text-brand-1 shadow-sm"
+                className="tap-scale flex flex-1 items-center justify-center rounded-full bg-brand px-2.5 py-4 text-base font-medium text-brand-1 shadow-sm"
               >
                 Subir foto
               </button>
