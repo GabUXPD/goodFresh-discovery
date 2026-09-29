@@ -364,18 +364,18 @@ export function OrderFeedbackModal({ open, onClose, products }: OrderFeedbackMod
                   <p className="text-base font-semibold text-ink-9">Gracias por avisarnos</p>
                   <p className="text-sm text-ink-5">Tomamos nota de tu comentario para mejorar tu próxima entrega.</p>
                 </div>
-                <div className="flex w-full gap-2">
+                <div className="flex w-full flex-col gap-2">
                   <button
                     type="button"
                     onClick={requestClose}
-                    className="tap-scale flex flex-1 items-center justify-center rounded-full border border-brand px-6 py-4 text-base font-medium text-brand"
+                    className="tap-scale flex w-full items-center justify-center rounded-full border border-brand px-6 py-4 text-base font-medium text-brand"
                   >
                     Hablar con soporte
                   </button>
                   <button
                     type="button"
                     onClick={requestClose}
-                    className="tap-scale flex flex-1 items-center justify-center rounded-full bg-brand px-6 py-4 text-base font-medium text-white shadow-sm"
+                    className="tap-scale flex w-full items-center justify-center rounded-full bg-brand px-6 py-4 text-base font-medium text-white shadow-sm"
                   >
                     Entendido
                   </button>
@@ -388,14 +388,25 @@ export function OrderFeedbackModal({ open, onClose, products }: OrderFeedbackMod
                 <>
                   <div className="flex w-full flex-col items-center gap-2 text-center">
                     <p className="text-base font-semibold text-ink-9">Identificamos un problema con:</p>
-                    <div className="flex flex-col items-center gap-0.5">
+                    <div className="flex w-full flex-col gap-1 rounded-2xl bg-neutro-3 p-2">
                       {affectedProducts.map((product) => (
-                        <p key={product.id} className="text-sm text-ink-5">
-                          {product.quantity} {product.name} - {product.unit}
-                        </p>
+                        <div
+                          key={product.id}
+                          className={`flex items-center gap-2 px-2 py-1 ${
+                            affectedProducts.length > 1 ? "justify-between" : "justify-center"
+                          }`}
+                        >
+                          <p className="text-sm text-ink-9">
+                            {product.quantity} {product.name} - {product.unit}
+                          </p>
+                          {affectedProducts.length > 1 && (
+                            <p className="text-sm font-medium text-ink-9">{formatPrice(product.price * product.quantity)}</p>
+                          )}
+                        </div>
                       ))}
+                      <div className="h-px w-full bg-[#d6d6d6]" />
+                      <p className="py-1 text-2xl font-bold text-brand">{formatPrice(affectedAmount)}</p>
                     </div>
-                    <p className="text-2xl font-bold text-brand">{formatPrice(affectedAmount)}</p>
                   </div>
 
                   <p className="text-sm font-semibold text-ink-9">¿Cómo prefieres que lo resolvamos?</p>
@@ -461,8 +472,8 @@ export function OrderFeedbackModal({ open, onClose, products }: OrderFeedbackMod
                   </div>
 
                   <div className="flex w-full flex-col items-center gap-2 pb-1">
-                    <div className="relative h-[173px] w-[288px]">
-                      <Image src="/images/goodclub-photo-frame.png" alt="" fill className="object-contain" />
+                    <div className="relative h-[186px] w-[288px]">
+                      <Image src="/images/claim-photo-frame.png" alt="" fill className="object-contain" />
                     </div>
                     <div className="flex flex-col items-center gap-1 text-center text-xs text-brand">
                       <p className="font-semibold">📸 Muestra claramente el problema (madurez, tamaño, etc.)</p>
@@ -515,12 +526,6 @@ export function OrderFeedbackModal({ open, onClose, products }: OrderFeedbackMod
 
         {step === "photo" && (
           <div className="flex w-full flex-col items-center gap-6 overflow-y-auto px-4 pt-4 pb-4">
-            <div className="flex w-full flex-col items-start gap-0.5 text-ink-5">
-              <p className="text-base font-semibold">Tu experiencia GoodClub en:</p>
-              <p className="text-base">GoodFresh</p>
-            </div>
-            <div className="h-px w-full bg-neutro-4" />
-
             <div className="flex w-full flex-col items-center gap-2 text-center text-ink-5">
               <p className="text-base">
                 <span className="font-bold">¡Gracias por tu compra! </span>
